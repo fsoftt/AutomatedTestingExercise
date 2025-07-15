@@ -90,36 +90,12 @@ namespace Task
             }
         }
 
-        private void CheckArticles()
-        {
-            WaitFor(By.XPath(Constants.ValidateGlobalSearch.Articles));
-
-            ReadOnlyCollection<IWebElement> elements = driver.FindElements(By.XPath(Constants.ValidateGlobalSearch.Articles));
-            foreach (IWebElement element in elements)
-            {
-                Assert.IsTrue(element.Text.ToLower().Contains(Constants.ValidateGlobalSearch.SearchTerm.ToLower()),
-                    $"Element text '{element.Text}' does not contain the search term '{Constants.ValidateGlobalSearch.SearchTerm}'.");
-            }
-        }
-
         private IWebDriver PrepareSite()
         {
             driver.Navigate().GoToUrl(Constants.Url);
             driver.Manage().Window.Maximize();
 
             return driver;
-        }
-
-        private void WaitFor(By by)
-        {
-            WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(Constants.WaitTimeInSeconds));
-            wait.Until(driver => driver.FindElement(by).Displayed);
-        }
-
-        private void Click(By by)
-        {
-            driver.FindElement(by)
-                .Click();
         }
     }
 }
