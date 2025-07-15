@@ -22,7 +22,7 @@
             public const string Magnifier = "search-icon";
             public const string Search = "q";
             public const string Find = ".//form[@class='header-search__field no-focus']//button";
-            public const string LinksContainingTheWords = "//div[@class=\"search-results__items\"]//*[contains(text(), 'blockchain')]";
+            public const string Articles = "//div[@class=\"search-results__items\"]//article";
             public const string SearchTerm = "BLOCKCHAIN";
         }
     }

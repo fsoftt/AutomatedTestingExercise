@@ -1,0 +1,64 @@
+﻿using OpenQA.Selenium;
+using OpenQA.Selenium.Support.UI;
+using Task.Exceptions;
+
+namespace Task.Pages
+{
+    internal class CareersPage : BasePage
+    {
+        private const string PageTitle = "Explore Professional Growth Opportunities | EPAM Careers";
+        
+        private readonly By applyBy = By.XPath(Constants.SearchForPositionBasedOnCriteria.Apply);
+        private readonly By findButtonBy = By.XPath(Constants.SearchForPositionBasedOnCriteria.Find);
+        private readonly By keywordsInputBy = By.Id(Constants.SearchForPositionBasedOnCriteria.KeywordsId);
+        private readonly By remoteCheckboxBy = By.XPath(Constants.SearchForPositionBasedOnCriteria.RemoteOption);
+        private readonly By latestElementBy = By.XPath(Constants.SearchForPositionBasedOnCriteria.LatestElement);
+
+        public CareersPage(IWebDriver driver) : base(driver)
+        {
+            if (driver.Title != PageTitle)
+            {
+                throw new IllegalStateException("Page is different than expected", driver.Url);
+            }
+        }
+
+        public void Search(string keywords, bool isRemote)
+        {
+            SetKeywords(keywords);
+            SetIsRemote(isRemote);
+            // TODO select All Locations
+
+            driver.FindElement(findButtonBy).Click();
+        }
+
+        private void SetIsRemote(bool isRemote)
+        {
+            if (isRemote)
+            {
+                driver.FindElement(remoteCheckboxBy).Click();
+            }
+        }
+
+        private void SetKeywords(string keywords)
+        {
+            WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(Constants.WaitTimeInSeconds));
+            wait.Until(driver => driver.FindElement(keywordsInputBy).Displayed);
+
+            IWebElement keywordsElement = driver.FindElement(keywordsInputBy);
+
+            keywordsElement.Clear();
+            keywordsElement.SendKeys(keywords);
+        }
+
+        public PositionPage ApplyToLatestElement()
+        {
+            WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(Constants.WaitTimeInSeconds));
+            wait.Until(driver => driver.FindElement(keywordsInputBy).Displayed);
+
+            driver.FindElement(latestElementBy).Click();
+            driver.FindElement(applyBy).Click();
+
+            return new PositionPage(driver);
+        }
+    }
+}

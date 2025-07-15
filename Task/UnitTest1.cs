@@ -2,12 +2,14 @@ using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Support.UI;
 using System.Collections.ObjectModel;
+using Task.Entities;
+using Task.Pages;
 
 namespace Task
 {
     public class UnitTest1
     {
-        private WebDriver driver;
+        private IWebDriver driver;
 
         [SetUp]
         public void Setup()
@@ -39,10 +41,14 @@ namespace Task
         {
             try
             {
-                PrepareSite();
-                Click(By.LinkText(Constants.SearchForPositionBasedOnCriteria.CareersLinkText));
-                FillPositionForm();
-                ApplyToLatestElement();
+                driver = PrepareSite();
+
+                CareersPage careersPage = new HomePage(driver).OpenCareers();
+                careersPage.Search(Constants.SearchForPositionBasedOnCriteria.ProgrammingLanguage, isRemote: true);
+
+                PositionPage positionPage = careersPage.ApplyToLatestElement();
+
+                Assert.That(positionPage, Is.Not.Null, "Position page should not be null.");
             }
             catch (Exception)
             {
@@ -64,9 +70,19 @@ namespace Task
         {
             try
             {
-                PrepareSite();
-                FillSearchForm();
-                CheckArticles();
+                driver = PrepareSite();
+
+                HomePage homePage = new HomePage(driver);
+                ResultsPage resultsPage = homePage.Search(Constants.ValidateGlobalSearch.SearchTerm);
+
+                IEnumerable<Article> articles = resultsPage.GetArticles();
+
+                foreach (Article article in articles)
+                {
+                    Assert.That(article.Title.ToLower().Contains(Constants.ValidateGlobalSearch.SearchTerm.ToLower()) 
+                        || article.Description.ToLower().Contains(Constants.ValidateGlobalSearch.SearchTerm.ToLower()), Is.True,
+                        $"Article '{article.Title}' does not contain the search term '{Constants.ValidateGlobalSearch.SearchTerm}'.");
+                }
             }
             catch (Exception)
             {
@@ -76,9 +92,9 @@ namespace Task
 
         private void CheckArticles()
         {
-            WaitFor(By.XPath(Constants.ValidateGlobalSearch.LinksContainingTheWords));
+            WaitFor(By.XPath(Constants.ValidateGlobalSearch.Articles));
 
-            ReadOnlyCollection<IWebElement> elements = driver.FindElements(By.XPath(Constants.ValidateGlobalSearch.LinksContainingTheWords));
+            ReadOnlyCollection<IWebElement> elements = driver.FindElements(By.XPath(Constants.ValidateGlobalSearch.Articles));
             foreach (IWebElement element in elements)
             {
                 Assert.IsTrue(element.Text.ToLower().Contains(Constants.ValidateGlobalSearch.SearchTerm.ToLower()),
@@ -86,24 +102,12 @@ namespace Task
             }
         }
 
-        private void FillSearchForm()
-        {
-            Click(By.ClassName(Constants.ValidateGlobalSearch.Magnifier));
-            WaitFor(By.Name(Constants.ValidateGlobalSearch.Search));
-
-            IWebElement search = driver.FindElement(By.Name(Constants.ValidateGlobalSearch.Search));
-
-            search.Clear();
-            search.SendKeys(Constants.ValidateGlobalSearch.SearchTerm);
-
-            WaitFor(By.XPath(Constants.ValidateGlobalSearch.Find));
-            Click(By.XPath(Constants.ValidateGlobalSearch.Find));
-        }
-
-        private void PrepareSite()
+        private IWebDriver PrepareSite()
         {
             driver.Navigate().GoToUrl(Constants.Url);
             driver.Manage().Window.Maximize();
+
+            return driver;
         }
 
         private void WaitFor(By by)
@@ -116,25 +120,6 @@ namespace Task
         {
             driver.FindElement(by)
                 .Click();
-        }
-
-        private void FillPositionForm()
-        {
-            WaitFor(By.Id(Constants.SearchForPositionBasedOnCriteria.KeywordsId));
-            IWebElement keywords = driver.FindElement(By.Id(Constants.SearchForPositionBasedOnCriteria.KeywordsId));
-
-            keywords.Clear();
-            keywords.SendKeys(Constants.SearchForPositionBasedOnCriteria.ProgrammingLanguage);
-
-            Click(By.XPath(Constants.SearchForPositionBasedOnCriteria.RemoteOption));
-            Click(By.XPath(Constants.SearchForPositionBasedOnCriteria.Find));
-        }
-
-        private void ApplyToLatestElement()
-        {
-            WaitFor(By.XPath(Constants.SearchForPositionBasedOnCriteria.LatestElement));
-            Click(By.XPath(Constants.SearchForPositionBasedOnCriteria.LatestElement));
-            Click(By.XPath(Constants.SearchForPositionBasedOnCriteria.Apply));
         }
     }
 }
