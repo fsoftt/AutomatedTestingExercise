@@ -1,6 +1,6 @@
 ﻿using OpenQA.Selenium;
 
-namespace Task.Pages
+namespace EpamTask.Pages
 {
     internal class PositionPage : BasePage
     {

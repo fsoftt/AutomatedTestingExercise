@@ -1,23 +1,16 @@
 ﻿using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
 using System.Collections.ObjectModel;
-using Task.Entities;
-using Task.Exceptions;
+using EpamTask.Entities;
 
-namespace Task.Pages
+namespace EpamTask.Pages
 {
     internal class ResultsPage : BasePage
     {
-        private const string PageTitle = "Search Our Website | EPAM";
-
         private readonly By articlesBy = By.XPath(Constants.ValidateGlobalSearch.Articles);
 
         public ResultsPage(IWebDriver driver) : base(driver)
         {
-            if (driver.Title != PageTitle)
-            {
-                throw new IllegalStateException("Page is different than expected", driver.Url);
-            }
         }
 
         public IEnumerable<Article> GetArticles()

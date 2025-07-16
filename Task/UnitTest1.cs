@@ -1,9 +1,9 @@
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
-using Task.Entities;
-using Task.Pages;
+using EpamTask.Entities;
+using EpamTask.Pages;
 
-namespace Task
+namespace EpamTask
 {
     public class UnitTest1
     {
@@ -40,22 +40,23 @@ namespace Task
             Validate that the programming language mentioned in the step above is on a page
         */
         [Test]
-        public void SearchForPositionBasedOnCriteria()
+        public async Task SearchForPositionBasedOnCriteria()
         {
             try
             {
                 driver = PrepareSite();
 
-                CareersPage careersPage = new HomePage(driver).OpenCareers();
+                HomePage homePage = await GetHomePage(driver);
+                CareersPage careersPage = homePage.OpenCareers();
                 careersPage.Search(Constants.SearchForPositionBasedOnCriteria.ProgrammingLanguage, isRemote: true);
 
                 PositionPage positionPage = careersPage.ApplyToLatestElement();
 
                 Assert.That(positionPage, Is.Not.Null, "Position page should not be null.");
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                Assert.Fail();
+                Assert.Fail(ex.Message);
             }
         }
 
@@ -69,13 +70,13 @@ namespace Task
         */
 
         [Test]
-        public void ValidateGlobalSearch()
+        public async Task ValidateGlobalSearch()
         {
             try
             {
                 driver = PrepareSite();
 
-                HomePage homePage = new HomePage(driver);
+                HomePage homePage = await GetHomePage(driver);
                 ResultsPage resultsPage = homePage.Search(Constants.ValidateGlobalSearch.SearchTerm);
 
                 IEnumerable<Article> articles = resultsPage.GetArticles();
@@ -87,9 +88,9 @@ namespace Task
                         $"Article '{article.Title}' does not contain the search term '{Constants.ValidateGlobalSearch.SearchTerm}'.");
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                Assert.Fail();
+                Assert.Fail(ex.Message);
             }
         }
 
@@ -105,13 +106,13 @@ namespace Task
             Close the browser.
         */
         [Test]
-        public void DownloadBrochure()
+        public async Task DownloadBrochure()
         {
             try
             {
                 driver = PrepareSite();
 
-                HomePage homePage = new HomePage(driver);
+                HomePage homePage = await GetHomePage(driver);
                 AboutPage aboutPage = homePage.OpenAbout();
 
                 bool downloaded= aboutPage.DownloadBrochure();
@@ -120,12 +121,11 @@ namespace Task
                     Assert.Fail("File was not downloaded.");
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                Assert.Fail();
+                Assert.Fail(ex.Message);
             }
         }
-
 
         /*
         Test case #4. Validate title of the article matches with title in the carousel:
@@ -138,7 +138,32 @@ namespace Task
             Validate that the name of the article matches with the noted above. 
             Close the browser.
         */
+        [Test]
+        public async Task CheckInsights()
+        {
+            try
+            {
+                driver = PrepareSite();
 
+                HomePage homePage = await GetHomePage(driver);
+                InsightsPage insightsPage = homePage.OpenInsights();
+
+                insightsPage.SwipeCarousel();
+                insightsPage.SwipeCarousel();
+
+                string articleTitle = insightsPage.GetCarouselArticleTitle();
+                InsightArticlePage articlePage = insightsPage.OpenCarouselArticle();
+
+                string articlePageTitle = articlePage.GetTitle();
+
+                Assert.That(articlePageTitle, Is.EqualTo(articleTitle), 
+                    $"Article title '{articlePageTitle}' does not match the expected title '{articleTitle}'.");
+            }
+            catch (Exception ex)
+            {
+                Assert.Fail(ex.Message);
+            }
+        }
 
         private IWebDriver PrepareSite()
         {
@@ -146,6 +171,14 @@ namespace Task
             driver.Manage().Window.Maximize();
 
             return driver;
+        }
+
+        private async Task<HomePage> GetHomePage(IWebDriver driver)
+        {
+            var homePage = new HomePage(driver);
+            await homePage.AcceptCookies();
+
+            return homePage;
         }
     }
 }

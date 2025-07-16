@@ -1,4 +1,4 @@
-﻿namespace Task.Entities
+﻿namespace EpamTask.Entities
 {
     internal class Article
     {

@@ -1,8 +1,8 @@
 ﻿using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
-using Task.Exceptions;
+using EpamTask.Exceptions;
 
-namespace Task.Pages
+namespace EpamTask.Pages
 {
     internal class CareersPage : BasePage
     {
@@ -16,7 +16,8 @@ namespace Task.Pages
 
         public CareersPage(IWebDriver driver) : base(driver)
         {
-            if (driver.Title != PageTitle)
+            string title = driver.Title;
+            if (title != PageTitle)
             {
                 throw new IllegalStateException("Page is different than expected", driver.Url);
             }

@@ -1,4 +1,4 @@
-﻿namespace Task.Exceptions
+﻿namespace EpamTask.Exceptions
 {
     internal class IllegalStateException : Exception
     {

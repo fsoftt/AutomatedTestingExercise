@@ -1,10 +1,10 @@
 ﻿using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
 using System.Collections.ObjectModel;
-using Task.Entities;
-using Task.Exceptions;
+using EpamTask.Entities;
+using EpamTask.Exceptions;
 
-namespace Task.Pages
+namespace EpamTask.Pages
 {
     internal class AboutPage : BasePage
     {
@@ -14,7 +14,8 @@ namespace Task.Pages
 
         public AboutPage(IWebDriver driver) : base(driver)
         {
-            if (driver.Title != PageTitle)
+            string title = driver.Title;
+            if (title != PageTitle)
             {
                 throw new IllegalStateException("Page is different than expected", driver.Url);
             }
@@ -34,7 +35,6 @@ namespace Task.Pages
                 throw new NoSuchElementException("No link with 'download' attribute found.");
             }
 
-            // TODO refactor to ScrollTo in base
             IWebElement downloadButton = linksWithDownload[0];
             ScrollTo(downloadButton);
 

@@ -1,6 +1,6 @@
 ﻿using OpenQA.Selenium;
 
-namespace Task.Pages
+namespace EpamTask.Pages
 {
     public abstract class BasePage
     {
