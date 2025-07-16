@@ -1,7 +1,5 @@
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
-using OpenQA.Selenium.Support.UI;
-using System.Collections.ObjectModel;
 using Task.Entities;
 using Task.Pages;
 
@@ -14,7 +12,12 @@ namespace Task
         [SetUp]
         public void Setup()
         {
-            driver = new ChromeDriver();
+            var options = new ChromeOptions();
+            options.AddUserProfilePreference("download.default_directory", Constants.DownloadDirectory);
+            options.AddUserProfilePreference("download.prompt_for_download", false);
+            options.AddUserProfilePreference("disable-popup-blocking", true);
+
+            driver = new ChromeDriver(options);
         }
 
         [TearDown]
@@ -89,6 +92,53 @@ namespace Task
                 Assert.Fail();
             }
         }
+
+        /*
+         * Test case #3. Validate file download function works as expected:
+            Create a Chrome instance.
+            Navigate to https://www.epam.com/.
+            Select “About” from the top menu.
+            Scroll down to the “EPAM at a Glance” section.
+            Click on the “Download” button.
+            Wait till the file is downloaded.
+            Validate that file “EPAM_Systems_Company_Overview.pdf” downloaded (use the name of the file as a parameter)
+            Close the browser.
+        */
+        [Test]
+        public void DownloadBrochure()
+        {
+            try
+            {
+                driver = PrepareSite();
+
+                HomePage homePage = new HomePage(driver);
+                AboutPage aboutPage = homePage.OpenAbout();
+
+                bool downloaded= aboutPage.DownloadBrochure();
+                if (!downloaded)
+                {
+                    Assert.Fail("File was not downloaded.");
+                }
+            }
+            catch (Exception)
+            {
+                Assert.Fail();
+            }
+        }
+
+
+        /*
+        Test case #4. Validate title of the article matches with title in the carousel:
+            Create a Chrome instance.
+            Navigate to https://www.epam.com/.
+            Select “Insights” from the top menu.
+            Swipe a carousel twice.
+            Note the name of the article.
+            Click on the “Read More” button.
+            Validate that the name of the article matches with the noted above. 
+            Close the browser.
+        */
+
 
         private IWebDriver PrepareSite()
         {

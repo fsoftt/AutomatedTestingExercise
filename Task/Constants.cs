@@ -4,9 +4,12 @@
     {
         public const int WaitTimeInSeconds = 10;
         public const string Url = "https://www.epam.com/";
+        public const string BrochureFileName = "EPAM_Corporate_Overview_Q4FY-2024.pdf";
+        public static string DownloadDirectory = Path.Combine(Directory.GetCurrentDirectory(), "Downloads");
 
         public static class SearchForPositionBasedOnCriteria
         {
+            public const string AboutLinkText = "About";
             public const string CareersLinkText = "Careers";
             public const string KeywordsId = "new_form_job_search-keyword";
             public const string ProgrammingLanguage = "C#";

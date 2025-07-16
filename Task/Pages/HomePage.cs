@@ -11,6 +11,7 @@ namespace Task.Pages
         private readonly By findButtonBy = By.XPath(Constants.ValidateGlobalSearch.Find);
         private readonly By searchInputBy = By.Name(Constants.ValidateGlobalSearch.Search);
         private readonly By magnifierIconBy = By.ClassName(Constants.ValidateGlobalSearch.Magnifier);
+        private readonly By aboutLinkBy = By.LinkText(Constants.SearchForPositionBasedOnCriteria.AboutLinkText);
         private readonly By careersLinkBy = By.LinkText(Constants.SearchForPositionBasedOnCriteria.CareersLinkText);
 
         public HomePage(IWebDriver driver) : base(driver)
@@ -19,6 +20,13 @@ namespace Task.Pages
             {
                 throw new IllegalStateException("Page is different than expected", driver.Url);
             }
+        }
+
+        public AboutPage OpenAbout()
+        {
+            driver.FindElement(aboutLinkBy).Click();
+
+            return new AboutPage(driver);
         }
 
         public CareersPage OpenCareers()
