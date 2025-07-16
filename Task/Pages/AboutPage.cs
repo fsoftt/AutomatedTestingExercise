@@ -38,7 +38,7 @@ namespace EpamTask.Pages
             IWebElement downloadButton = linksWithDownload[0];
             ScrollTo(downloadButton);
 
-            WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(Constants.WaitTimeInSeconds));
+            var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(Constants.WaitTimeInSeconds));
             wait.Until(driver => IsInViewport(downloadButton));
 
             downloadButton.Click();

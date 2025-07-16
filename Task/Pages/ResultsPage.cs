@@ -15,7 +15,7 @@ namespace EpamTask.Pages
 
         public IEnumerable<Article> GetArticles()
         {
-            WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(Constants.WaitTimeInSeconds));
+            var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(Constants.WaitTimeInSeconds));
             wait.Until(driver => driver.FindElement(articlesBy).Displayed);
 
             ReadOnlyCollection<IWebElement> articlesElement = driver.FindElements(articlesBy);

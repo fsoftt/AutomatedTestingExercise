@@ -52,7 +52,9 @@ namespace EpamTask
 
                 PositionPage positionPage = careersPage.ApplyToLatestElement();
 
-                Assert.That(positionPage, Is.Not.Null, "Position page should not be null.");
+                bool containsKeyword = positionPage.Contains(Constants.SearchForPositionBasedOnCriteria.ProgrammingLanguage);
+
+                Assert.That(containsKeyword, Is.True, "Page does not contain the used keyword.");
             }
             catch (Exception ex)
             {
@@ -173,7 +175,7 @@ namespace EpamTask
             return driver;
         }
 
-        private async Task<HomePage> GetHomePage(IWebDriver driver)
+        private static async Task<HomePage> GetHomePage(IWebDriver driver)
         {
             var homePage = new HomePage(driver);
             await homePage.AcceptCookies();

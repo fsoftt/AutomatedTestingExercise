@@ -29,7 +29,7 @@ namespace EpamTask.Pages
         {
             try
             {
-                WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(Constants.WaitTimeInSeconds));
+                var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(Constants.WaitTimeInSeconds));
                 wait.Until(driver => driver.FindElement(cookiesBy).Displayed);
 
                 await Task.Delay(500);
@@ -67,7 +67,7 @@ namespace EpamTask.Pages
         {
             driver.FindElement(magnifierIconBy).Click();
 
-            WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(Constants.WaitTimeInSeconds));
+            var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(Constants.WaitTimeInSeconds));
             wait.Until(driver => driver.FindElement(searchInputBy).Displayed);
 
             IWebElement search = driver.FindElement(searchInputBy);

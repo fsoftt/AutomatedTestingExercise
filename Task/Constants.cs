@@ -15,7 +15,8 @@
             public const string InsightsLinkText = "Insights";
             public const string KeywordsId = "new_form_job_search-keyword";
             public const string ProgrammingLanguage = "C#";
-            public const string LocationFieldName = "location";
+            public const string Location = "div.recruiting-search__location";
+            public const string AllLocations = ".select2-results ul li:first-child ul li:first-child";
             public const string RemoteOption = "//*[@id=\"jobSearchFilterForm\"]/fieldset/div/p[1]/label";
             public const string Find = "//form[@id=\"jobSearchFilterForm\"]/descendant::button[@type=\"submit\"]";
             public const string LatestElement = "//ul[contains(@class, 'search-result__list')]/li[last()]";

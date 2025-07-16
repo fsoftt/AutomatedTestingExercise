@@ -13,7 +13,7 @@ namespace EpamTask.Pages
 
         internal string GetTitle()
         {
-            WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(Constants.WaitTimeInSeconds));
+            var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(Constants.WaitTimeInSeconds));
             wait.Until(driver => driver.FindElement(titleBy).Displayed);
 
             return driver.FindElement(titleBy).Text;

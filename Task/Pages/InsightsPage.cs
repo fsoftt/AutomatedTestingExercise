@@ -16,7 +16,7 @@ namespace EpamTask.Pages
 
         internal string GetCarouselArticleTitle()
         {
-            WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(Constants.WaitTimeInSeconds));
+            var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(Constants.WaitTimeInSeconds));
             wait.Until(driver => driver.FindElement(carouselTitleBy).Displayed);
 
             return driver.FindElement(carouselTitleBy).Text;
@@ -24,7 +24,7 @@ namespace EpamTask.Pages
 
         internal InsightArticlePage OpenCarouselArticle()
         {
-            WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(Constants.WaitTimeInSeconds));
+            var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(Constants.WaitTimeInSeconds));
             wait.Until(driver => driver.FindElement(readMoreButtonBy).Displayed);
 
             driver.FindElement(readMoreButtonBy).Click();

@@ -13,6 +13,8 @@ namespace EpamTask.Pages
         private readonly By keywordsInputBy = By.Id(Constants.SearchForPositionBasedOnCriteria.KeywordsId);
         private readonly By remoteCheckboxBy = By.XPath(Constants.SearchForPositionBasedOnCriteria.RemoteOption);
         private readonly By latestElementBy = By.XPath(Constants.SearchForPositionBasedOnCriteria.LatestElement);
+        private readonly By allLocationsBy = By.CssSelector(Constants.SearchForPositionBasedOnCriteria.AllLocations);
+        private readonly By locationBy = By.CssSelector(Constants.SearchForPositionBasedOnCriteria.Location);
 
         public CareersPage(IWebDriver driver) : base(driver)
         {
@@ -27,7 +29,12 @@ namespace EpamTask.Pages
         {
             SetKeywords(keywords);
             SetIsRemote(isRemote);
-            // TODO select All Locations
+            
+            driver.FindElement(locationBy).Click();
+
+            var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(Constants.WaitTimeInSeconds));
+            wait.Until(driver => driver.FindElement(allLocationsBy).Displayed);
+            driver.FindElement(allLocationsBy).Click();
 
             driver.FindElement(findButtonBy).Click();
         }
@@ -42,7 +49,7 @@ namespace EpamTask.Pages
 
         private void SetKeywords(string keywords)
         {
-            WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(Constants.WaitTimeInSeconds));
+            var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(Constants.WaitTimeInSeconds));
             wait.Until(driver => driver.FindElement(keywordsInputBy).Displayed);
 
             IWebElement keywordsElement = driver.FindElement(keywordsInputBy);
@@ -53,8 +60,8 @@ namespace EpamTask.Pages
 
         public PositionPage ApplyToLatestElement()
         {
-            WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(Constants.WaitTimeInSeconds));
-            wait.Until(driver => driver.FindElement(keywordsInputBy).Displayed);
+            var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(Constants.WaitTimeInSeconds));
+            wait.Until(driver => driver.FindElement(latestElementBy).Displayed);
 
             driver.FindElement(latestElementBy).Click();
             driver.FindElement(applyBy).Click();
