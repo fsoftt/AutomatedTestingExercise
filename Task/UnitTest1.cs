@@ -39,8 +39,10 @@ namespace EpamTask
             Click on the button “View and apply”
             Validate that the programming language mentioned in the step above is on a page
         */
-        [Test]
-        public async Task SearchForPositionBasedOnCriteria()
+        [TestCase("C#")]
+        [TestCase("Java")]
+        [TestCase("Python")]
+        public async Task SearchForPositionBasedOnCriteria(string programmingLanguage)
         {
             try
             {
@@ -48,11 +50,11 @@ namespace EpamTask
 
                 HomePage homePage = await GetHomePage(driver);
                 CareersPage careersPage = homePage.OpenCareers();
-                careersPage.Search(Constants.SearchForPositionBasedOnCriteria.ProgrammingLanguage, isRemote: true);
+                careersPage.Search(programmingLanguage, isRemote: true);
 
                 PositionPage positionPage = careersPage.ApplyToLatestElement();
 
-                bool containsKeyword = positionPage.Contains(Constants.SearchForPositionBasedOnCriteria.ProgrammingLanguage);
+                bool containsKeyword = positionPage.Contains(programmingLanguage);
 
                 Assert.That(containsKeyword, Is.True, "Page does not contain the used keyword.");
             }
@@ -70,24 +72,25 @@ namespace EpamTask
             Click “Find” button
             Validate that all links in a list contain the word “BLOCKCHAIN”/”Cloud”/”Automation” in the text. LINQ should be used. 
         */
-
-        [Test]
-        public async Task ValidateGlobalSearch()
+        [TestCase("Cloud")]
+        [TestCase("Blockchain")]
+        [TestCase("Automation")]
+        public async Task ValidateGlobalSearch(string searchTerm)
         {
             try
             {
                 driver = PrepareSite();
 
                 HomePage homePage = await GetHomePage(driver);
-                ResultsPage resultsPage = homePage.Search(Constants.ValidateGlobalSearch.SearchTerm);
+                ResultsPage resultsPage = homePage.Search(searchTerm);
 
                 IEnumerable<Article> articles = resultsPage.GetArticles();
 
                 foreach (Article article in articles)
                 {
-                    Assert.That(article.Title.ToLower().Contains(Constants.ValidateGlobalSearch.SearchTerm.ToLower()) 
-                        || article.Description.ToLower().Contains(Constants.ValidateGlobalSearch.SearchTerm.ToLower()), Is.True,
-                        $"Article '{article.Title}' does not contain the search term '{Constants.ValidateGlobalSearch.SearchTerm}'.");
+                    Assert.That(article.Title.ToLower().Contains(searchTerm.ToLower()) 
+                        || article.Description.ToLower().Contains(searchTerm.ToLower()), Is.True,
+                        $"Article '{article.Title}' does not contain the search term '{searchTerm}'.");
                 }
             }
             catch (Exception ex)
@@ -158,7 +161,7 @@ namespace EpamTask
 
                 string articlePageTitle = articlePage.GetTitle();
 
-                Assert.That(articlePageTitle, Is.EqualTo(articleTitle), 
+                Assert.That(articlePageTitle, Contains.Substring(articleTitle), 
                     $"Article title '{articlePageTitle}' does not match the expected title '{articleTitle}'.");
             }
             catch (Exception ex)

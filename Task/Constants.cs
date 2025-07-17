@@ -14,7 +14,6 @@
             public const string CareersLinkText = "Careers";
             public const string InsightsLinkText = "Insights";
             public const string KeywordsId = "new_form_job_search-keyword";
-            public const string ProgrammingLanguage = "C#";
             public const string Location = "div.recruiting-search__location";
             public const string AllLocations = ".select2-results ul li:first-child ul li:first-child";
             public const string RemoteOption = "//*[@id=\"jobSearchFilterForm\"]/fieldset/div/p[1]/label";
@@ -29,7 +28,6 @@
             public const string Search = "q";
             public const string Find = ".//form[@class='header-search__field no-focus']//button";
             public const string Articles = "//div[@class=\"search-results__items\"]//article";
-            public const string SearchTerm = "BLOCKCHAIN";
         }
 
         public static class Insights
