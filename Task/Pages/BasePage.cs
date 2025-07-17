@@ -1,4 +1,5 @@
 ﻿using OpenQA.Selenium;
+using OpenQA.Selenium.Interactions;
 
 namespace EpamTask.Pages
 {
@@ -15,7 +16,9 @@ namespace EpamTask.Pages
 
         protected void ScrollTo(IWebElement element)
         {
-            ((IJavaScriptExecutor)driver).ExecuteScript("arguments[0].scrollIntoView(true);", element);
+            Actions actions = new Actions(driver);
+            actions.MoveToElement(element);
+            actions.Perform();
         }
 
         protected bool IsInViewport(IWebElement element)
