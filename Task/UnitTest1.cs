@@ -54,24 +54,17 @@ namespace EpamTask
         [TestCase("Python")]
         public async Task SearchForPositionBasedOnCriteria(string programmingLanguage)
         {
-            try
-            {
-                driver = PrepareSite();
+            driver = PrepareSite();
 
-                HomePage homePage = await GetHomePage(driver);
-                CareersPage careersPage = homePage.OpenCareers();
-                careersPage.Search(programmingLanguage, isRemote: true);
+            HomePage homePage = await GetHomePage(driver);
+            CareersPage careersPage = homePage.OpenCareers();
+            careersPage.Search(programmingLanguage, isRemote: true);
 
-                PositionPage positionPage = careersPage.ApplyToLatestElement();
+            PositionPage positionPage = careersPage.ApplyToLatestElement();
 
-                bool containsKeyword = positionPage.Contains(programmingLanguage);
+            bool containsKeyword = positionPage.Contains(programmingLanguage);
 
-                Assert.That(containsKeyword, Is.True, "Page does not contain the used keyword.");
-            }
-            catch (Exception ex)
-            {
-                Assert.Fail(ex.Message);
-            }
+            Assert.That(containsKeyword, Is.True, "Page does not contain the used keyword.");
         }
 
         /*
@@ -87,25 +80,18 @@ namespace EpamTask
         [TestCase("Automation")]
         public async Task ValidateGlobalSearch(string searchTerm)
         {
-            try
+            driver = PrepareSite();
+
+            HomePage homePage = await GetHomePage(driver);
+            ResultsPage resultsPage = homePage.Search(searchTerm);
+
+            IEnumerable<Article> articles = resultsPage.GetArticles();
+
+            foreach (Article article in articles)
             {
-                driver = PrepareSite();
-
-                HomePage homePage = await GetHomePage(driver);
-                ResultsPage resultsPage = homePage.Search(searchTerm);
-
-                IEnumerable<Article> articles = resultsPage.GetArticles();
-
-                foreach (Article article in articles)
-                {
-                    Assert.That(article.Title.ToLower().Contains(searchTerm.ToLower()) 
-                        || article.Description.ToLower().Contains(searchTerm.ToLower()), Is.True,
-                        $"Article '{article.Title}' does not contain the search term '{searchTerm}'.");
-                }
-            }
-            catch (Exception ex)
-            {
-                Assert.Fail(ex.Message);
+                Assert.That(article.Title.ToLower().Contains(searchTerm.ToLower())
+                    || article.Description.ToLower().Contains(searchTerm.ToLower()), Is.True,
+                    $"Article '{article.Title}' does not contain the search term '{searchTerm}'.");
             }
         }
 
@@ -123,22 +109,15 @@ namespace EpamTask
         [TestCase("EPAM_Corporate_Overview_Q4FY-2024.pdf")]
         public async Task DownloadBrochure(string fileName)
         {
-            try
-            {
-                driver = PrepareSite();
+            driver = PrepareSite();
 
-                HomePage homePage = await GetHomePage(driver);
-                AboutPage aboutPage = homePage.OpenAbout();
+            HomePage homePage = await GetHomePage(driver);
+            AboutPage aboutPage = homePage.OpenAbout();
 
-                bool downloaded= aboutPage.DownloadBrochure(fileName);
-                if (!downloaded)
-                {
-                    Assert.Fail("File was not downloaded.");
-                }
-            }
-            catch (Exception ex)
+            bool downloaded = aboutPage.DownloadBrochure(fileName);
+            if (!downloaded)
             {
-                Assert.Fail(ex.Message);
+                Assert.Fail("File was not downloaded.");
             }
         }
 
@@ -156,28 +135,21 @@ namespace EpamTask
         [Test]
         public async Task CheckInsights()
         {
-            try
-            {
-                driver = PrepareSite();
+            driver = PrepareSite();
 
-                HomePage homePage = await GetHomePage(driver);
-                InsightsPage insightsPage = homePage.OpenInsights();
+            HomePage homePage = await GetHomePage(driver);
+            InsightsPage insightsPage = homePage.OpenInsights();
 
-                insightsPage.SwipeCarousel();
-                insightsPage.SwipeCarousel();
+            insightsPage.SwipeCarousel();
+            insightsPage.SwipeCarousel();
 
-                string articleTitle = insightsPage.GetCarouselArticleTitle();
-                InsightArticlePage articlePage = insightsPage.OpenCarouselArticle();
+            string articleTitle = insightsPage.GetCarouselArticleTitle();
+            InsightArticlePage articlePage = insightsPage.OpenCarouselArticle();
 
-                string articlePageTitle = articlePage.GetTitle();
+            string articlePageTitle = articlePage.GetTitle();
 
-                Assert.That(articlePageTitle, Contains.Substring(articleTitle), 
-                    $"Article title '{articlePageTitle}' does not match the expected title '{articleTitle}'.");
-            }
-            catch (Exception ex)
-            {
-                Assert.Fail(ex.Message);
-            }
+            Assert.That(articlePageTitle, Contains.Substring(articleTitle),
+                $"Article title '{articlePageTitle}' does not match the expected title '{articleTitle}'.");
         }
 
         private IWebDriver PrepareSite()
