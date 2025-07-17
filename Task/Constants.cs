@@ -4,7 +4,6 @@
     {
         public const int WaitTimeInSeconds = 10;
         public const string Url = "https://www.epam.com/";
-        public const string BrochureFileName = "EPAM_Corporate_Overview_Q4FY-2024.pdf";
         public static string CookiesElementBy = "div#onetrust-consent-sdk #onetrust-accept-btn-handler";
         public static string DownloadDirectory = Path.Combine(Directory.GetCurrentDirectory(), "Downloads");
 

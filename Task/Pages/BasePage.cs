@@ -4,10 +4,12 @@ namespace EpamTask.Pages
 {
     public abstract class BasePage
     {
+        protected bool headless;
         protected IWebDriver driver;
 
-        public BasePage(IWebDriver driver)
+        public BasePage(IWebDriver driver, bool headless)
         {
+            this.headless = headless;
             this.driver = driver ?? throw new ArgumentNullException(nameof(driver));
         }
 

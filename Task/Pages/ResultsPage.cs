@@ -9,7 +9,7 @@ namespace EpamTask.Pages
     {
         private readonly By articlesBy = By.XPath(Constants.ValidateGlobalSearch.Articles);
 
-        public ResultsPage(IWebDriver driver) : base(driver)
+        public ResultsPage(IWebDriver driver, bool headless) : base(driver, headless)
         {
         }
 

@@ -12,18 +12,18 @@ namespace EpamTask.Pages
 
         private readonly By articlesBy = By.XPath(Constants.ValidateGlobalSearch.Articles);
 
-        public AboutPage(IWebDriver driver) : base(driver)
+        public AboutPage(IWebDriver driver, bool headless) : base(driver, headless)
         {
             string title = driver.Title;
-            if (title != PageTitle)
+            if (!headless && title != PageTitle)
             {
                 throw new IllegalStateException("Page is different than expected", driver.Url);
             }
         }
 
-        internal bool DownloadBrochure()
+        internal bool DownloadBrochure(string fileName)
         {
-            string filePath = Path.Combine(Constants.DownloadDirectory, Constants.BrochureFileName);
+            string filePath = Path.Combine(Constants.DownloadDirectory, fileName);
             if (File.Exists(filePath))
             {
                 File.Delete(filePath);

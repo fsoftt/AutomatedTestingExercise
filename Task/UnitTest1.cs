@@ -8,6 +8,9 @@ namespace EpamTask
     public class UnitTest1
     {
         private IWebDriver driver;
+        // Everything fails when running it as headless, so it is set to false by default.
+        // I'll need to investigate why it fails in headless mode.
+        private readonly bool runAsHeadless = false;
 
         [SetUp]
         public void Setup()
@@ -16,6 +19,13 @@ namespace EpamTask
             options.AddUserProfilePreference("download.default_directory", Constants.DownloadDirectory);
             options.AddUserProfilePreference("download.prompt_for_download", false);
             options.AddUserProfilePreference("disable-popup-blocking", true);
+
+            if (runAsHeadless)
+            {
+                options.AddArgument("--headless");
+                options.AddArgument("--disable-gpu");
+                options.AddArgument("--window-size=1920,1080");
+            }
 
             driver = new ChromeDriver(options);
         }
@@ -110,8 +120,8 @@ namespace EpamTask
             Validate that file “EPAM_Systems_Company_Overview.pdf” downloaded (use the name of the file as a parameter)
             Close the browser.
         */
-        [Test]
-        public async Task DownloadBrochure()
+        [TestCase("EPAM_Corporate_Overview_Q4FY-2024.pdf")]
+        public async Task DownloadBrochure(string fileName)
         {
             try
             {
@@ -120,7 +130,7 @@ namespace EpamTask
                 HomePage homePage = await GetHomePage(driver);
                 AboutPage aboutPage = homePage.OpenAbout();
 
-                bool downloaded= aboutPage.DownloadBrochure();
+                bool downloaded= aboutPage.DownloadBrochure(fileName);
                 if (!downloaded)
                 {
                     Assert.Fail("File was not downloaded.");
@@ -178,9 +188,9 @@ namespace EpamTask
             return driver;
         }
 
-        private static async Task<HomePage> GetHomePage(IWebDriver driver)
+        private async Task<HomePage> GetHomePage(IWebDriver driver)
         {
-            var homePage = new HomePage(driver);
+            var homePage = new HomePage(driver, runAsHeadless);
             await homePage.AcceptCookies();
 
             return homePage;

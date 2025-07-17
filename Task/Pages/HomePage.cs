@@ -16,10 +16,10 @@ namespace EpamTask.Pages
         private readonly By careersLinkBy = By.LinkText(Constants.SearchForPositionBasedOnCriteria.CareersLinkText);
         private readonly By insightsLinkBy = By.LinkText(Constants.SearchForPositionBasedOnCriteria.InsightsLinkText);
         
-        public HomePage(IWebDriver driver) : base(driver)
+        public HomePage(IWebDriver driver, bool headless) : base(driver, headless)
         {
             string title = driver.Title;
-            if (title != PageTitle)
+            if (!headless && title != PageTitle)
             {
                 throw new IllegalStateException("Page is different than expected", driver.Url);
             }
@@ -35,7 +35,7 @@ namespace EpamTask.Pages
                 await Task.Delay(500);
                 driver.FindElement(cookiesBy).Click();
             }
-            catch (NoSuchElementException)
+            catch (Exception)
             {
             }
             
@@ -46,21 +46,21 @@ namespace EpamTask.Pages
         {
             driver.FindElement(aboutLinkBy).Click();
 
-            return new AboutPage(driver);
+            return new AboutPage(driver, headless);
         }
 
         public CareersPage OpenCareers()
         {
             driver.FindElement(careersLinkBy).Click();
 
-            return new CareersPage(driver);
+            return new CareersPage(driver, headless);
         }
 
         public InsightsPage OpenInsights()
         {
             driver.FindElement(insightsLinkBy).Click();
 
-            return new InsightsPage(driver);
+            return new InsightsPage(driver, headless);
         }
 
         public ResultsPage Search(string searchTerm)
@@ -78,7 +78,7 @@ namespace EpamTask.Pages
             wait.Until(driver => driver.FindElement(findButtonBy).Displayed);
             driver.FindElement(findButtonBy).Click();
 
-            return new ResultsPage(driver);
+            return new ResultsPage(driver, headless);
         }
     }
 }

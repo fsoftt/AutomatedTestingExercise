@@ -7,7 +7,7 @@ namespace EpamTask.Pages
     {
         private readonly By titleBy = By.CssSelector("div.container div.header_and_download");
 
-        public InsightArticlePage(IWebDriver driver) : base(driver)
+        public InsightArticlePage(IWebDriver driver, bool headless) : base(driver, headless)
         {
         }
 

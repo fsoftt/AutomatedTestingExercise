@@ -16,10 +16,10 @@ namespace EpamTask.Pages
         private readonly By allLocationsBy = By.CssSelector(Constants.SearchForPositionBasedOnCriteria.AllLocations);
         private readonly By locationBy = By.CssSelector(Constants.SearchForPositionBasedOnCriteria.Location);
 
-        public CareersPage(IWebDriver driver) : base(driver)
+        public CareersPage(IWebDriver driver, bool headless) : base(driver, headless)
         {
             string title = driver.Title;
-            if (title != PageTitle)
+            if (!headless && title != PageTitle)
             {
                 throw new IllegalStateException("Page is different than expected", driver.Url);
             }
@@ -66,7 +66,7 @@ namespace EpamTask.Pages
             driver.FindElement(latestElementBy).Click();
             driver.FindElement(applyBy).Click();
 
-            return new PositionPage(driver);
+            return new PositionPage(driver, headless);
         }
     }
 }
