@@ -22,7 +22,7 @@ namespace EpamTask
 
             if (runAsHeadless)
             {
-                options.AddArgument("--headless");
+                options.AddArgument("--headless=new");
                 options.AddArgument("--disable-gpu");
                 options.AddArgument("--window-size=1920,1080");
             }
