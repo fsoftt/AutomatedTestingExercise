@@ -4,7 +4,7 @@ namespace EpamTask.Pages
 {
     internal class PositionPage : BasePage
     {
-        public PositionPage(IWebDriver driver, bool headless) : base(driver, headless)
+        public PositionPage(IWebDriver driver) : base(driver)
         {
         }
 

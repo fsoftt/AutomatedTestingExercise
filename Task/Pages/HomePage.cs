@@ -1,5 +1,4 @@
 ﻿using OpenQA.Selenium;
-using OpenQA.Selenium.Support.UI;
 using EpamTask.Exceptions;
 
 namespace EpamTask.Pages
@@ -16,10 +15,10 @@ namespace EpamTask.Pages
         private readonly By careersLinkBy = By.LinkText(Constants.SearchForPositionBasedOnCriteria.CareersLinkText);
         private readonly By insightsLinkBy = By.LinkText(Constants.SearchForPositionBasedOnCriteria.InsightsLinkText);
         
-        public HomePage(IWebDriver driver, bool headless) : base(driver, headless)
+        public HomePage(IWebDriver driver) : base(driver)
         {
             string title = driver.Title;
-            if (!headless && title != PageTitle)
+            if (title != PageTitle)
             {
                 throw new IllegalStateException("Page is different than expected", driver.Url);
             }
@@ -43,21 +42,21 @@ namespace EpamTask.Pages
         {
             driver.FindElement(aboutLinkBy).Click();
 
-            return new AboutPage(driver, headless);
+            return new AboutPage(driver);
         }
 
         public CareersPage OpenCareers()
         {
             driver.FindElement(careersLinkBy).Click();
 
-            return new CareersPage(driver, headless);
+            return new CareersPage(driver);
         }
 
         public InsightsPage OpenInsights()
         {
             driver.FindElement(insightsLinkBy).Click();
 
-            return new InsightsPage(driver, headless);
+            return new InsightsPage(driver);
         }
 
         public ResultsPage Search(string searchTerm)
@@ -73,7 +72,7 @@ namespace EpamTask.Pages
             WaitForElementToBeVisible(findButtonBy);
             driver.FindElement(findButtonBy).Click();
 
-            return new ResultsPage(driver, headless);
+            return new ResultsPage(driver);
         }
     }
 }

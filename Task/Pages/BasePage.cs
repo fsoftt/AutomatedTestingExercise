@@ -9,9 +9,8 @@ namespace EpamTask.Pages
         protected bool headless;
         protected IWebDriver driver;
 
-        public BasePage(IWebDriver driver, bool headless)
+        public BasePage(IWebDriver driver)
         {
-            this.headless = headless;
             this.driver = driver ?? throw new ArgumentNullException(nameof(driver));
         }
 

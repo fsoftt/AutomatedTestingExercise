@@ -1,5 +1,4 @@
 ﻿using OpenQA.Selenium;
-using OpenQA.Selenium.Support.UI;
 
 namespace EpamTask.Pages
 {
@@ -7,7 +6,7 @@ namespace EpamTask.Pages
     {
         private readonly By titleBy = By.CssSelector("div.container div.header_and_download");
 
-        public InsightArticlePage(IWebDriver driver, bool headless) : base(driver, headless)
+        public InsightArticlePage(IWebDriver driver) : base(driver)
         {
         }
 

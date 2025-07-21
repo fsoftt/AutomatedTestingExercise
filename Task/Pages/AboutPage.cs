@@ -1,7 +1,5 @@
 ﻿using OpenQA.Selenium;
-using OpenQA.Selenium.Support.UI;
 using System.Collections.ObjectModel;
-using EpamTask.Entities;
 using EpamTask.Exceptions;
 
 namespace EpamTask.Pages
@@ -12,10 +10,10 @@ namespace EpamTask.Pages
 
         private readonly By downloadBy = By.XPath(Constants.Download.DownloadButton);
 
-        public AboutPage(IWebDriver driver, bool headless) : base(driver, headless)
+        public AboutPage(IWebDriver driver) : base(driver)
         {
             string title = driver.Title;
-            if (!headless && title != PageTitle)
+            if (title != PageTitle)
             {
                 throw new IllegalStateException("Page is different than expected", driver.Url);
             }

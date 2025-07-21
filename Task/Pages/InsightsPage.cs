@@ -10,7 +10,7 @@ namespace EpamTask.Pages
         private readonly By carouselTitleBy = By.CssSelector(Constants.Insights.CurrentCarouselTitle);
         private readonly By readMoreButtonBy = By.CssSelector(Constants.Insights.ReadMoreButton);
 
-        public InsightsPage(IWebDriver driver, bool headless) : base(driver, headless)
+        public InsightsPage(IWebDriver driver) : base(driver)
         {
         }
 
@@ -25,7 +25,7 @@ namespace EpamTask.Pages
             WaitForElementToBeVisible(readMoreButtonBy);
             driver.FindElement(readMoreButtonBy).Click();
             
-            return new InsightArticlePage(driver, headless);
+            return new InsightArticlePage(driver);
         }
 
         internal void SwipeCarousel()

@@ -159,7 +159,7 @@ namespace EpamTask
 
         private HomePage GetHomePage(IWebDriver driver)
         {
-            var homePage = new HomePage(driver, runAsHeadless);
+            var homePage = new HomePage(driver);
             homePage.AcceptCookies();
 
             return homePage;

@@ -1,5 +1,4 @@
 ﻿using OpenQA.Selenium;
-using OpenQA.Selenium.Support.UI;
 using System.Collections.ObjectModel;
 using EpamTask.Entities;
 
@@ -9,7 +8,7 @@ namespace EpamTask.Pages
     {
         private readonly By articlesBy = By.XPath(Constants.ValidateGlobalSearch.Articles);
 
-        public ResultsPage(IWebDriver driver, bool headless) : base(driver, headless)
+        public ResultsPage(IWebDriver driver) : base(driver)
         {
         }
 
