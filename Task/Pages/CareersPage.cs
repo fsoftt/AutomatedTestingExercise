@@ -32,8 +32,7 @@ namespace EpamTask.Pages
             
             driver.FindElement(locationBy).Click();
 
-            var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(Constants.WaitTimeInSeconds));
-            wait.Until(driver => driver.FindElement(allLocationsBy).Displayed);
+            WaitForElementToBeVisible(allLocationsBy);
             driver.FindElement(allLocationsBy).Click();
 
             driver.FindElement(findButtonBy).Click();
@@ -49,9 +48,7 @@ namespace EpamTask.Pages
 
         private void SetKeywords(string keywords)
         {
-            var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(Constants.WaitTimeInSeconds));
-            wait.Until(driver => driver.FindElement(keywordsInputBy).Displayed);
-
+            WaitForElementToBeVisible(keywordsInputBy);
             IWebElement keywordsElement = driver.FindElement(keywordsInputBy);
 
             keywordsElement.Clear();
@@ -60,9 +57,7 @@ namespace EpamTask.Pages
 
         public PositionPage ApplyToLatestElement()
         {
-            var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(Constants.WaitTimeInSeconds));
-            wait.Until(driver => driver.FindElement(latestElementBy).Displayed);
-
+            WaitForElementToBeVisible(latestElementBy);
             driver.FindElement(latestElementBy).Click();
             driver.FindElement(applyBy).Click();
 

@@ -25,14 +25,11 @@ namespace EpamTask.Pages
             }
         }
 
-        public async Task<HomePage> AcceptCookies()
+        public HomePage AcceptCookies()
         {
             try
             {
-                var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(Constants.WaitTimeInSeconds));
-                wait.Until(driver => driver.FindElement(cookiesBy).Displayed);
-
-                await Task.Delay(500);
+                WaitForElementToBeVisible(cookiesBy);
                 driver.FindElement(cookiesBy).Click();
             }
             catch (Exception)
@@ -67,15 +64,13 @@ namespace EpamTask.Pages
         {
             driver.FindElement(magnifierIconBy).Click();
 
-            var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(Constants.WaitTimeInSeconds));
-            wait.Until(driver => driver.FindElement(searchInputBy).Displayed);
-
+            WaitForElementToBeVisible(searchInputBy);
             IWebElement search = driver.FindElement(searchInputBy);
 
             search.Clear();
             search.SendKeys(searchTerm);
 
-            wait.Until(driver => driver.FindElement(findButtonBy).Displayed);
+            WaitForElementToBeVisible(findButtonBy);
             driver.FindElement(findButtonBy).Click();
 
             return new ResultsPage(driver, headless);

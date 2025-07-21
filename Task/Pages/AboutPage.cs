@@ -10,7 +10,7 @@ namespace EpamTask.Pages
     {
         private const string PageTitle = "One of the Fastest-Growing Public Tech Companies | About EPAM";
 
-        private readonly By articlesBy = By.XPath(Constants.ValidateGlobalSearch.Articles);
+        private readonly By downloadBy = By.XPath(Constants.Download.DownloadButton);
 
         public AboutPage(IWebDriver driver, bool headless) : base(driver, headless)
         {
@@ -29,7 +29,7 @@ namespace EpamTask.Pages
                 File.Delete(filePath);
             }
 
-            ReadOnlyCollection<IWebElement> linksWithDownload = driver.FindElements(By.XPath("//a[@download]"));
+            ReadOnlyCollection<IWebElement> linksWithDownload = driver.FindElements(downloadBy);
             if (linksWithDownload.Count == 0)
             {
                 throw new NoSuchElementException("No link with 'download' attribute found.");
@@ -38,20 +38,13 @@ namespace EpamTask.Pages
             IWebElement downloadButton = linksWithDownload[0];
             ScrollTo(downloadButton);
 
-            var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(Constants.WaitTimeInSeconds));
-            wait.Until(driver => IsInViewport(downloadButton));
-
+            WaitForElementToBeInViewport(downloadButton);
             downloadButton.Click();
 
-            bool downloaded = wait.Until(driver =>
+            bool downloaded = WaitFor(driver =>
             {
                 return File.Exists(filePath);
             });
-
-            if (!downloaded)
-            {
-                throw new TimeoutException($"File '{filePath}' was not downloaded within {Constants.WaitTimeInSeconds} seconds.");
-            }
 
             return downloaded;
         }

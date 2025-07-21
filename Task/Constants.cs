@@ -29,6 +29,11 @@
             public const string Articles = "//div[@class=\"search-results__items\"]//article";
         }
 
+        public static class Download
+        {
+            public const string DownloadButton = "//a[@download]";
+        }
+
         public static class Insights
         {
             public const string CarouselNext = "button.slider__right-arrow";

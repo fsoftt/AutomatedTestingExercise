@@ -8,10 +8,6 @@ namespace EpamTask
     public class UnitTest1
     {
         private IWebDriver driver;
-        // Everything fails when running it as headless, so it is set to false by default.
-        // I'll need to investigate why it fails in headless mode.
-        private readonly bool runAsHeadless = false;
-
         [SetUp]
         public void Setup()
         {
@@ -20,6 +16,7 @@ namespace EpamTask
             options.AddUserProfilePreference("download.prompt_for_download", false);
             options.AddUserProfilePreference("disable-popup-blocking", true);
 
+            bool runAsHeadless = false;
             if (runAsHeadless)
             {
                 options.AddArgument("--headless=new");
@@ -52,11 +49,11 @@ namespace EpamTask
         [TestCase("C#")]
         [TestCase("Java")]
         [TestCase("Python")]
-        public async Task SearchForPositionBasedOnCriteria(string programmingLanguage)
+        public void SearchForPositionBasedOnCriteria(string programmingLanguage)
         {
             driver = PrepareSite();
 
-            HomePage homePage = await GetHomePage(driver);
+            HomePage homePage = GetHomePage(driver);
             CareersPage careersPage = homePage.OpenCareers();
             careersPage.Search(programmingLanguage, isRemote: true);
 
@@ -78,11 +75,11 @@ namespace EpamTask
         [TestCase("Cloud")]
         [TestCase("Blockchain")]
         [TestCase("Automation")]
-        public async Task ValidateGlobalSearch(string searchTerm)
+        public void ValidateGlobalSearch(string searchTerm)
         {
             driver = PrepareSite();
 
-            HomePage homePage = await GetHomePage(driver);
+            HomePage homePage = GetHomePage(driver);
             ResultsPage resultsPage = homePage.Search(searchTerm);
 
             IEnumerable<Article> articles = resultsPage.GetArticles();
@@ -107,11 +104,11 @@ namespace EpamTask
             Close the browser.
         */
         [TestCase("EPAM_Corporate_Overview_Q4FY-2024.pdf")]
-        public async Task DownloadBrochure(string fileName)
+        public void DownloadBrochure(string fileName)
         {
             driver = PrepareSite();
 
-            HomePage homePage = await GetHomePage(driver);
+            HomePage homePage = GetHomePage(driver);
             AboutPage aboutPage = homePage.OpenAbout();
 
             bool downloaded = aboutPage.DownloadBrochure(fileName);
@@ -133,11 +130,11 @@ namespace EpamTask
             Close the browser.
         */
         [Test]
-        public async Task CheckInsights()
+        public void CheckInsights()
         {
             driver = PrepareSite();
 
-            HomePage homePage = await GetHomePage(driver);
+            HomePage homePage = GetHomePage(driver);
             InsightsPage insightsPage = homePage.OpenInsights();
 
             insightsPage.SwipeCarousel();
@@ -160,10 +157,10 @@ namespace EpamTask
             return driver;
         }
 
-        private async Task<HomePage> GetHomePage(IWebDriver driver)
+        private HomePage GetHomePage(IWebDriver driver)
         {
             var homePage = new HomePage(driver, runAsHeadless);
-            await homePage.AcceptCookies();
+            homePage.AcceptCookies();
 
             return homePage;
         }

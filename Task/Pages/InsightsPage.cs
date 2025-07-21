@@ -16,17 +16,13 @@ namespace EpamTask.Pages
 
         internal string GetCarouselArticleTitle()
         {
-            var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(Constants.WaitTimeInSeconds));
-            wait.Until(driver => driver.FindElement(carouselTitleBy).Displayed);
-
+            WaitForElementToBeVisible(carouselTitleBy);
             return driver.FindElement(carouselTitleBy).Text;
         }
 
         internal InsightArticlePage OpenCarouselArticle()
         {
-            var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(Constants.WaitTimeInSeconds));
-            wait.Until(driver => driver.FindElement(readMoreButtonBy).Displayed);
-
+            WaitForElementToBeVisible(readMoreButtonBy);
             driver.FindElement(readMoreButtonBy).Click();
             
             return new InsightArticlePage(driver, headless);
