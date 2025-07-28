@@ -1,6 +1,6 @@
-﻿using EpamTask.Exceptions;
-using OpenQA.Selenium;
-using OpenQA.Selenium.Support.UI;
+﻿using OpenQA.Selenium;
+using OpenQA.Selenium.Interactions;
+using System;
 
 namespace EpamTask.Pages
 {

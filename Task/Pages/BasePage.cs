@@ -37,6 +37,27 @@ namespace EpamTask.Pages
             return wait.Until(condition);
         }
 
+        protected void SwipeDragging(By elementBy)
+        {
+            WaitForElementToBeVisible(elementBy);
+            var carouselContainer = driver.FindElement(elementBy);
+
+            new Actions(driver)
+                .DragAndDropToOffset(carouselContainer, -300, 0)
+                .Perform();
+        }
+
+        protected void SwipeMoving(By elementBy)
+        {
+            WaitForElementToBeVisible(elementBy);
+            var carouselContainer = driver.FindElement(elementBy);
+
+            new Actions(driver)
+                .ClickAndHold(carouselContainer)
+                .MoveByOffset(-300, 0)
+                .Release()
+                .Perform();
+        }
 
         protected bool IsInViewport(IWebElement element)
         {
