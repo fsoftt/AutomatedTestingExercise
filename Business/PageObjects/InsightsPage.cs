@@ -1,10 +1,9 @@
-﻿using OpenQA.Selenium;
-using OpenQA.Selenium.Interactions;
-using System;
+﻿using CrossCutting.Static;
+using OpenQA.Selenium;
 
-namespace EpamTask.Pages
+namespace Business.PageObjects
 {
-    internal class InsightsPage : BasePage
+    public class InsightsPage : BasePage
     {
         private readonly By carouselNextBy = By.CssSelector(Constants.Insights.CarouselNext);
         private readonly By carouselTitleBy = By.CssSelector(Constants.Insights.CurrentCarouselTitle);
@@ -14,13 +13,13 @@ namespace EpamTask.Pages
         {
         }
 
-        internal string GetCarouselArticleTitle()
+        public string GetCarouselArticleTitle()
         {
             WaitForElementToBeVisible(carouselTitleBy);
             return driver.FindElement(carouselTitleBy).Text;
         }
 
-        internal InsightArticlePage OpenCarouselArticle()
+        public InsightArticlePage OpenCarouselArticle()
         {
             WaitForElementToBeVisible(readMoreButtonBy);
             driver.FindElement(readMoreButtonBy).Click();
@@ -28,7 +27,7 @@ namespace EpamTask.Pages
             return new InsightArticlePage(driver);
         }
 
-        internal void SwipeCarousel()
+        public void SwipeCarousel()
         {
             IWebElement next = driver.FindElement(carouselNextBy);
             next.Click();

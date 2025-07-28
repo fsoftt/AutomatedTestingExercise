@@ -1,11 +1,14 @@
 ﻿using OpenQA.Selenium;
 using System.Collections.ObjectModel;
-using EpamTask.Entities;
+using Business.Entities;
+using CrossCutting.Static;
 
-namespace EpamTask.Pages
+namespace Business.PageObjects
 {
-    internal class ResultsPage : BasePage
+    public class ResultsPage : BasePage
     {
+        private readonly By titleBy = By.TagName("h3");
+        private readonly By descriptionBy = By.TagName("p");
         private readonly By articlesBy = By.XPath(Constants.ValidateGlobalSearch.Articles);
 
         public ResultsPage(IWebDriver driver) : base(driver)
@@ -20,8 +23,8 @@ namespace EpamTask.Pages
             var articles = new List<Article>();
             foreach (IWebElement element in articlesElement)
             {
-                string title = element.FindElement(By.TagName("h3")).Text;
-                string description = element.FindElement(By.TagName("p")).Text;
+                string title = element.FindElement(titleBy).Text;
+                string description = element.FindElement(descriptionBy).Text;
 
                 articles.Add(new Article
                 {

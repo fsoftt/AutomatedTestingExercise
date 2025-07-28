@@ -1,7 +1,8 @@
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
-using EpamTask.Entities;
-using EpamTask.Pages;
+using Business.Entities;
+using Business.PageObjects;
+using CrossCutting.Static;
 
 namespace EpamTask
 {

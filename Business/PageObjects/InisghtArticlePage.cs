@@ -1,8 +1,8 @@
 ﻿using OpenQA.Selenium;
 
-namespace EpamTask.Pages
+namespace Business.PageObjects
 {
-    internal class InsightArticlePage : BasePage
+    public class InsightArticlePage : BasePage
     {
         private readonly By titleBy = By.CssSelector("div.container div.header_and_download");
 
@@ -10,7 +10,7 @@ namespace EpamTask.Pages
         {
         }
 
-        internal string GetTitle()
+        public string GetTitle()
         {
             WaitForElementToBeVisible(titleBy);
             return driver.FindElement(titleBy).Text;

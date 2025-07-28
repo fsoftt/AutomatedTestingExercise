@@ -34,6 +34,12 @@
             public const string CarouselNext = "button.slider__right-arrow";
             public const string CurrentCarouselTitle = "div.slider div.active div.slider__slide div.text";
             public const string ReadMoreButton = "div.slider div.active div.slider__slide div.single-slide__cta-container a";
+            public const string CarouselContainer = "div.owl-stage-outer div.owl-stage div.owl-item.active div.slider__slide";
+        }
+
+        public static class Download
+        {
+            public const string DownloadButton = "//a[@download]";
         }
     }
 }

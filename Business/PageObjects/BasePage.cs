@@ -1,8 +1,9 @@
-﻿using OpenQA.Selenium;
+﻿using CrossCutting.Static;
+using OpenQA.Selenium;
 using OpenQA.Selenium.Interactions;
 using OpenQA.Selenium.Support.UI;
 
-namespace EpamTask.Pages
+namespace Business.PageObjects
 {
     public abstract class BasePage
     {

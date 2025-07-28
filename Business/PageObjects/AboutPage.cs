@@ -1,10 +1,11 @@
 ﻿using OpenQA.Selenium;
 using System.Collections.ObjectModel;
-using EpamTask.Exceptions;
+using CrossCutting.Exceptions;
+using CrossCutting.Static;
 
-namespace EpamTask.Pages
+namespace Business.PageObjects
 {
-    internal class AboutPage : BasePage
+    public class AboutPage : BasePage
     {
         private const string PageTitle = "One of the Fastest-Growing Public Tech Companies | About EPAM";
 
@@ -19,7 +20,7 @@ namespace EpamTask.Pages
             }
         }
 
-        internal bool DownloadBrochure(string fileName)
+        public bool DownloadBrochure(string fileName)
         {
             string filePath = Path.Combine(Constants.DownloadDirectory, fileName);
             if (File.Exists(filePath))

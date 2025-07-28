@@ -1,8 +1,8 @@
 ﻿using OpenQA.Selenium;
 
-namespace EpamTask.Pages
+namespace Business.PageObjects
 {
-    internal class PositionPage : BasePage
+    public class PositionPage : BasePage
     {
         public PositionPage(IWebDriver driver) : base(driver)
         {

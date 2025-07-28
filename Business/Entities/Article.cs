@@ -1,6 +1,6 @@
-﻿namespace EpamTask.Entities
+﻿namespace Business.Entities
 {
-    internal class Article
+    public class Article
     {
         public string Title { get; set; } = string.Empty;
         public string Description { get; set; } = string.Empty;

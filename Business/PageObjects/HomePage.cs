@@ -1,9 +1,10 @@
 ﻿using OpenQA.Selenium;
-using EpamTask.Exceptions;
+using CrossCutting.Static;
+using CrossCutting.Exceptions;
 
-namespace EpamTask.Pages
+namespace Business.PageObjects
 {
-    internal class HomePage : BasePage
+    public class HomePage : BasePage
     {
         private const string PageTitle = "EPAM | Software Engineering & Product Development Services";
 
