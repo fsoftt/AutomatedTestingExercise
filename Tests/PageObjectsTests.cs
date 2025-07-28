@@ -1,31 +1,25 @@
 using OpenQA.Selenium;
-using OpenQA.Selenium.Chrome;
 using Business.Entities;
 using Business.PageObjects;
 using CrossCutting.Static;
+using Core.Utilities;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 
 namespace Tests
 {
     public class PageObjectsTests
     {
         private IWebDriver driver;
+        private readonly IConfiguration configuration = ConfigFactory.Get();
+        private readonly ILogger<PageObjectsTests> logger = LoggingFactory.CreateLogger<PageObjectsTests>();
+
         [SetUp]
         public void Setup()
         {
-            var options = new ChromeOptions();
-            options.AddUserProfilePreference("download.default_directory", Constants.DownloadDirectory);
-            options.AddUserProfilePreference("download.prompt_for_download", false);
-            options.AddUserProfilePreference("disable-popup-blocking", true);
-
             bool runAsHeadless = false;
-            if (runAsHeadless)
-            {
-                options.AddArgument("--headless=new");
-                options.AddArgument("--disable-gpu");
-                options.AddArgument("--window-size=1920,1080");
-            }
-
-            driver = new ChromeDriver(options);
+            
+            driver = WebDriverFactory.Get(runAsHeadless);
         }
 
         [TearDown]
