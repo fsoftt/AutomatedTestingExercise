@@ -4,9 +4,9 @@ using Business.Entities;
 using Business.PageObjects;
 using CrossCutting.Static;
 
-namespace EpamTask
+namespace Tests
 {
-    public class UnitTest1
+    public class PageObjectsTests
     {
         private IWebDriver driver;
         [SetUp]
