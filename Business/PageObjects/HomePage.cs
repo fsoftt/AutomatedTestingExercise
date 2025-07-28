@@ -23,6 +23,16 @@ namespace Business.PageObjects
             {
                 throw new IllegalStateException("Page is different than expected", driver.Url);
             }
+
+            PrepareSite();
+        }
+
+        public IWebDriver PrepareSite()
+        {
+            driver.Navigate().GoToUrl(Constants.Url);
+            AcceptCookies();
+
+            return driver;
         }
 
         public HomePage AcceptCookies()
