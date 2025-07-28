@@ -2,6 +2,7 @@
 using Core.Utilities;
 using CrossCutting.Providers;
 using CrossCutting.Static;
+using Microsoft.Extensions.Configuration;
 using OpenQA.Selenium;
 
 namespace Tests
@@ -14,6 +15,9 @@ namespace Tests
         [SetUp]
         public void Setup()
         {
+            var configuration = serviceProvider.GetConfiguration();
+            var value = configuration.GetValue<string>("test");
+
             bool runAsHeadless = false;
 
             IWebDriver driver = serviceProvider.GetWebDriver(runAsHeadless);
