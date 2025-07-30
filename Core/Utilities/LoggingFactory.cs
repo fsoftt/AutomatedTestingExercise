@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using Serilog;
 
 namespace Core.Utilities
@@ -14,10 +15,12 @@ namespace Core.Utilities
                 return loggerFactory;
             }
 
-            Log.Logger = new LoggerConfiguration()
-                .MinimumLevel.Debug()
-                .WriteTo.Console()
-                .WriteTo.File(logFilePath, rollingInterval: RollingInterval.Day)
+            var configuration = new LoggerConfiguration();
+            SetLoggingLevel(configuration);
+            configuration.WriteTo.Console();
+            configuration.WriteTo.File(logFilePath, rollingInterval: RollingInterval.Day);
+
+            Log.Logger = configuration
                 .CreateLogger();
 
             loggerFactory = LoggerFactory.Create(builder =>
@@ -26,6 +29,27 @@ namespace Core.Utilities
             });
 
             return loggerFactory;
+        }
+
+        private static void SetLoggingLevel(LoggerConfiguration configuration)
+        {
+            IConfiguration configurationService = ConfigFactory.Get();
+            string minimumLogLevel = configurationService["Logging:MinimumLevel"]!;
+            switch (minimumLogLevel)
+            {
+                case "Debug":
+                    configuration.MinimumLevel.Debug();
+                    break;
+                case "Information":
+                    configuration.MinimumLevel.Information();
+                    break;
+                case "Warning":
+                    configuration.MinimumLevel.Warning();
+                    break;
+                case "Error":
+                    configuration.MinimumLevel.Error();
+                    break;
+            }
         }
 
         public static ILogger<T> CreateLogger<T>(string logFilePath = "logs/log.txt")
