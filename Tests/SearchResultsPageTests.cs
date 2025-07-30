@@ -2,13 +2,14 @@
 using Business.PageObjects;
 using Core.Utilities;
 using CrossCutting.Providers;
+using NUnit.Framework.Interfaces;
 
 namespace Tests
 {
     internal class SearchResultsPageTests
     {
         private HomePage homePage;
-        private ISimpleServiceProvider serviceProvider = new SimpleServiceProvider();
+        private readonly ISimpleServiceProvider serviceProvider = new SimpleServiceProvider();
 
         [SetUp]
         public void Setup()
@@ -19,6 +20,11 @@ namespace Tests
         [TearDown]
         public void Teardown()
         {
+            if (TestContext.CurrentContext.Result.Outcome == ResultState.Failure)
+            {
+                ScreenshotProvider.TakeBrowserScreenshot(homePage.driver);
+            }
+
             BrowserFactory.CloseDriver();
         }
 
