@@ -8,6 +8,6 @@ namespace CrossCutting.Providers
     {
         IConfiguration GetConfiguration();
         ILogger GetLogger<T>();
-        IWebDriver GetWebDriver(bool headless);
+        IWebDriver GetWebDriver(bool headless = false);
     }
 }

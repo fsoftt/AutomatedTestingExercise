@@ -1,10 +1,11 @@
-﻿using OpenQA.Selenium;
+﻿using Microsoft.Extensions.Logging;
+using OpenQA.Selenium;
 
 namespace Business.PageObjects
 {
     public class PositionPage : BasePage
     {
-        public PositionPage(IWebDriver driver) : base(driver)
+        public PositionPage(BasePage basePage) : base(basePage)
         {
         }
 
@@ -16,6 +17,7 @@ namespace Business.PageObjects
             }
             catch (Exception ex)
             {
+                logger.LogError(ex, "Error while checking if text '{Text}' is present on the page.", text);
                 throw new NoSuchElementException($"Text '{text}' not found on the page.", ex);
             }
         }

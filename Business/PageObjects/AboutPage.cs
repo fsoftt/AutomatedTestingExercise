@@ -1,27 +1,25 @@
-﻿using OpenQA.Selenium;
+﻿using CrossCutting.Static;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
+using OpenQA.Selenium;
 using System.Collections.ObjectModel;
-using CrossCutting.Exceptions;
-using CrossCutting.Static;
 
 namespace Business.PageObjects
 {
     public class AboutPage : BasePage
     {
-        private const string PageTitle = "One of the Fastest-Growing Public Tech Companies | About EPAM";
+        private readonly By downloadBy;
 
-        private readonly By downloadBy = By.XPath(Constants.Download.DownloadButton);
-
-        public AboutPage(IWebDriver driver) : base(driver)
+        public AboutPage(HomePage homePage) : base(homePage)
         {
-            string title = driver.Title;
-            if (title != PageTitle)
-            {
-                throw new IllegalStateException("Page is different than expected", driver.Url);
-            }
+            string downloadById = configuration.GetValue<string?>(ConfigurationKeys.Download.DownloadButton)!;
+            downloadBy = By.XPath(downloadById);
         }
 
         public bool DownloadBrochure(string fileName)
         {
+            logger.LogDebug("Downloading brochure with file name: {FileName}", fileName);
+
             string filePath = Path.Combine(Constants.DownloadDirectory, fileName);
             if (File.Exists(filePath))
             {
@@ -37,8 +35,8 @@ namespace Business.PageObjects
             IWebElement downloadButton = linksWithDownload[0];
             ScrollTo(downloadButton);
 
-            WaitForElementToBeInViewport(downloadButton);
-            downloadButton.Click();
+            WaitForElementToBeVisible(downloadButton);
+            Click(downloadButton);
 
             bool downloaded = WaitFor(driver =>
             {

@@ -1,17 +1,24 @@
-﻿using OpenQA.Selenium;
+﻿using CrossCutting.Static;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
+using OpenQA.Selenium;
 
 namespace Business.PageObjects
 {
     public class InsightArticlePage : BasePage
     {
-        private readonly By titleBy = By.CssSelector("div.container div.header_and_download");
+        private readonly By titleBy;
 
-        public InsightArticlePage(IWebDriver driver) : base(driver)
+        public InsightArticlePage(BasePage basePage) : base(basePage)
         {
+            string titleById = configuration.GetValue<string?>(ConfigurationKeys.Insights.InsightArticleTitle)!;
+            titleBy = By.CssSelector(titleById);
         }
 
         public string GetTitle()
         {
+            logger.LogDebug("Getting article title");
+
             WaitForElementToBeVisible(titleBy);
             return driver.FindElement(titleBy).Text;
         }

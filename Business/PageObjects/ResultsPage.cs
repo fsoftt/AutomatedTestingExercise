@@ -1,22 +1,34 @@
 ﻿using OpenQA.Selenium;
 using System.Collections.ObjectModel;
 using Business.Entities;
+using Microsoft.Extensions.Configuration;
 using CrossCutting.Static;
+using Microsoft.Extensions.Logging;
 
 namespace Business.PageObjects
 {
     public class ResultsPage : BasePage
     {
-        private readonly By titleBy = By.TagName("h3");
-        private readonly By descriptionBy = By.TagName("p");
-        private readonly By articlesBy = By.XPath(Constants.ValidateGlobalSearch.Articles);
+        private readonly By titleBy;
+        private readonly By articlesBy;
+        private readonly By descriptionBy;
 
-        public ResultsPage(IWebDriver driver) : base(driver)
+        public ResultsPage(HomePage homePage) : base(homePage)
         {
+            string? articleTitleId = configuration.GetValue<string?>(ConfigurationKeys.ValidateGlobalSearch.ArticleTitle);
+            titleBy = By.TagName(articleTitleId!);
+
+            string? articleTitleDescriptionId = configuration.GetValue<string?>(ConfigurationKeys.ValidateGlobalSearch.ArticleDescription);
+            descriptionBy = By.TagName(articleTitleDescriptionId!);
+
+            string? articlesById = configuration.GetValue<string?>(ConfigurationKeys.ValidateGlobalSearch.Articles);
+            articlesBy = By.XPath(articlesById!);
         }
 
         public IEnumerable<Article> GetArticles()
         {
+            logger.LogDebug("Getting articles from results page");
+
             WaitForElementToBeVisible(articlesBy);
             ReadOnlyCollection<IWebElement> articlesElement = driver.FindElements(articlesBy);
             

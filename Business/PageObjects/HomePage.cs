@@ -1,6 +1,9 @@
-﻿using OpenQA.Selenium;
+﻿using CrossCutting.Exceptions;
+using CrossCutting.Providers;
 using CrossCutting.Static;
-using CrossCutting.Exceptions;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
+using OpenQA.Selenium;
 
 namespace Business.PageObjects
 {
@@ -8,28 +11,48 @@ namespace Business.PageObjects
     {
         private const string PageTitle = "EPAM | Software Engineering & Product Development Services";
 
-        private readonly By cookiesBy = By.CssSelector(Constants.CookiesElementBy);
-        private readonly By findButtonBy = By.XPath(Constants.ValidateGlobalSearch.Find);
-        private readonly By searchInputBy = By.Name(Constants.ValidateGlobalSearch.Search);
-        private readonly By magnifierIconBy = By.ClassName(Constants.ValidateGlobalSearch.Magnifier);
-        private readonly By aboutLinkBy = By.LinkText(Constants.SearchForPositionBasedOnCriteria.AboutLinkText);
-        private readonly By careersLinkBy = By.LinkText(Constants.SearchForPositionBasedOnCriteria.CareersLinkText);
-        private readonly By insightsLinkBy = By.LinkText(Constants.SearchForPositionBasedOnCriteria.InsightsLinkText);
-        
-        public HomePage(IWebDriver driver) : base(driver)
+        private readonly string url;
+        private readonly By cookiesBy;
+        private readonly By findButtonBy;
+        private readonly By searchInputBy;
+        private readonly By magnifierIconBy;
+        private readonly By aboutLinkBy;
+        private readonly By careersLinkBy;
+        private readonly By insightsLinkBy;
+
+        public HomePage(ISimpleServiceProvider serviceProvider) : base(serviceProvider)
         {
+            url = configuration.GetValue<string?>(ConfigurationKeys.Url)!;
+            string cookiesById = configuration.GetValue<string?>(ConfigurationKeys.CookiesElementBy)!;
+            string findButtonById = configuration.GetValue<string?>(ConfigurationKeys.ValidateGlobalSearch.Find)!;
+            string searchInputById = configuration.GetValue<string?>(ConfigurationKeys.ValidateGlobalSearch.Search)!;
+            string magnifierIconById = configuration.GetValue<string?>(ConfigurationKeys.ValidateGlobalSearch.Magnifier)!;
+            string aboutLinkById = configuration.GetValue<string?>(ConfigurationKeys.SearchForPositionBasedOnCriteria.AboutLinkText)!;
+            string careersLinkById = configuration.GetValue<string?>(ConfigurationKeys.SearchForPositionBasedOnCriteria.CareersLinkText)!;
+            string insightsLinkById = configuration.GetValue<string?>(ConfigurationKeys.SearchForPositionBasedOnCriteria.InsightsLinkText)!;
+
+            cookiesBy = By.CssSelector(cookiesById);
+            findButtonBy = By.XPath(findButtonById);
+            searchInputBy = By.Name(searchInputById);
+            magnifierIconBy = By.ClassName(magnifierIconById);
+            aboutLinkBy = By.LinkText(aboutLinkById);
+            careersLinkBy = By.LinkText(careersLinkById);
+            insightsLinkBy = By.LinkText(insightsLinkById);
+
+            PrepareSite();
+
             string title = driver.Title;
             if (title != PageTitle)
             {
                 throw new IllegalStateException("Page is different than expected", driver.Url);
             }
-
-            PrepareSite();
         }
 
         public IWebDriver PrepareSite()
         {
-            driver.Navigate().GoToUrl(Constants.Url);
+            logger.LogInformation("Preparing site: {Url}", url);
+            driver.Navigate().GoToUrl(url);
+
             AcceptCookies();
 
             return driver;
@@ -37,13 +60,16 @@ namespace Business.PageObjects
 
         public HomePage AcceptCookies()
         {
+            logger.LogInformation("Accepting cookies");
+
             try
             {
                 WaitForElementToBeVisible(cookiesBy);
-                driver.FindElement(cookiesBy).Click();
+                Click(driver.FindElement(cookiesBy));
             }
             catch (Exception)
             {
+                logger.LogWarning("Cookies element not found or already accepted");
             }
             
             return this;
@@ -51,39 +77,46 @@ namespace Business.PageObjects
 
         public AboutPage OpenAbout()
         {
-            driver.FindElement(aboutLinkBy).Click();
+            logger.LogInformation("Opening About page");
 
-            return new AboutPage(driver);
+            Click(driver.FindElement(aboutLinkBy));
+
+            return new AboutPage(this);
         }
 
         public CareersPage OpenCareers()
         {
-            driver.FindElement(careersLinkBy).Click();
+            logger.LogInformation("Opening Careers page");
 
-            return new CareersPage(driver);
+            Click(driver.FindElement(careersLinkBy));
+
+            return new CareersPage(this);
         }
 
         public InsightsPage OpenInsights()
         {
-            driver.FindElement(insightsLinkBy).Click();
+            logger.LogInformation("Opening Insights page");
 
-            return new InsightsPage(driver);
+            Click(driver.FindElement(insightsLinkBy));
+
+            return new InsightsPage(this);
         }
 
         public ResultsPage Search(string searchTerm)
         {
-            driver.FindElement(magnifierIconBy).Click();
+            logger.LogInformation("Searching for term: {SearchTerm}", searchTerm);
+
+            Click(driver.FindElement(magnifierIconBy));
 
             WaitForElementToBeVisible(searchInputBy);
             IWebElement search = driver.FindElement(searchInputBy);
 
-            search.Clear();
-            search.SendKeys(searchTerm);
+            SendKeys(search, searchTerm);
 
             WaitForElementToBeVisible(findButtonBy);
-            driver.FindElement(findButtonBy).Click();
+            Click(driver.FindElement(findButtonBy));
 
-            return new ResultsPage(driver);
+            return new ResultsPage(this);
         }
     }
 }

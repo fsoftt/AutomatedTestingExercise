@@ -1,4 +1,5 @@
-﻿using OpenQA.Selenium;
+﻿using CrossCutting.Static;
+using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Edge;
 using OpenQA.Selenium.Firefox;
@@ -22,6 +23,9 @@ namespace Core.Utilities
                 case "chrome":
                     // TODO Options can be created in a provider
                     var options = new ChromeOptions();
+                    options.AddUserProfilePreference("download.default_directory", Constants.DownloadDirectory);
+                    options.AddUserProfilePreference("download.prompt_for_download", false);
+                    options.AddUserProfilePreference("disable-popup-blocking", true);
 
                     if (headless)
                     {

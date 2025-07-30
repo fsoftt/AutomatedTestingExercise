@@ -1,4 +1,6 @@
-﻿using CrossCutting.Static;
+﻿using CrossCutting.Providers;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Interactions;
 using OpenQA.Selenium.Support.UI;
@@ -7,32 +9,66 @@ namespace Business.PageObjects
 {
     public abstract class BasePage
     {
-        protected bool headless;
-        protected IWebDriver driver;
+        public ILogger logger;
+        public IWebDriver driver;
+        public IConfiguration configuration;
 
-        public BasePage(IWebDriver driver)
+        private const int WaitTimeInSeconds = 10;
+
+        protected BasePage(BasePage basePage)
         {
-            this.driver = driver ?? throw new ArgumentNullException(nameof(driver));
+            this.driver = basePage.driver;
+            this.logger = basePage.logger;
+            this.configuration = basePage.configuration;
+        }
+
+        public BasePage(ISimpleServiceProvider serviceProvider)
+        {
+            this.driver = serviceProvider.GetWebDriver();
+            this.logger = serviceProvider.GetLogger<BasePage>();
+            this.configuration = serviceProvider.GetConfiguration();
+        }
+
+        protected void Click(IWebElement element)
+        {
+            logger.LogDebug("Clicking element: {Element}", element);
+
+            element.Click();
+        }
+
+        protected void SendKeys(IWebElement element, string textToWrite)
+        {
+            logger.LogDebug("Writing in element: {Element}. Content: {Content}", element, textToWrite);
+
+            element.Clear();
+            element.SendKeys(textToWrite);
         }
 
         protected void ScrollTo(IWebElement element)
         {
-            Actions actions = new Actions(driver);
+            logger.LogDebug("Scrolling to element: {Element}", element);
+
+            var actions = new Actions(driver);
             actions.MoveToElement(element);
             actions.Perform();
         }
 
-        protected bool WaitForElementToBeVisible(By by, int timeoutInSeconds = Constants.WaitTimeInSeconds)
+        protected bool WaitForElementToBeVisible(By by, int timeoutInSeconds = WaitTimeInSeconds)
         {
             return WaitFor(driver => driver.FindElement(by).Displayed, timeoutInSeconds);
         }
 
-        protected bool WaitForElementToBeInViewport(IWebElement element, int timeoutInSeconds = Constants.WaitTimeInSeconds)
+        protected bool WaitForElementToBeVisible(IWebElement element, int timeoutInSeconds = WaitTimeInSeconds)
+        {
+            return WaitFor(driver => element.Displayed, timeoutInSeconds);
+        }
+
+        protected bool WaitForElementToBeInViewport(IWebElement element, int timeoutInSeconds = WaitTimeInSeconds)
         {
             return WaitFor(driver => IsInViewport(element), timeoutInSeconds);
         }
 
-        protected bool WaitFor(Func<IWebDriver, bool> condition, int timeoutInSeconds = Constants.WaitTimeInSeconds)
+        protected bool WaitFor(Func<IWebDriver, bool> condition, int timeoutInSeconds = WaitTimeInSeconds)
         {
             var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(timeoutInSeconds));
             return wait.Until(condition);
@@ -40,8 +76,10 @@ namespace Business.PageObjects
 
         protected void SwipeDragging(By elementBy)
         {
+
             WaitForElementToBeVisible(elementBy);
             var carouselContainer = driver.FindElement(elementBy);
+            logger.LogDebug("Swipping element: {Element}", carouselContainer);
 
             new Actions(driver)
                 .DragAndDropToOffset(carouselContainer, -300, 0)
@@ -52,6 +90,7 @@ namespace Business.PageObjects
         {
             WaitForElementToBeVisible(elementBy);
             var carouselContainer = driver.FindElement(elementBy);
+            logger.LogDebug("Swipping element: {Element}", carouselContainer);
 
             new Actions(driver)
                 .ClickAndHold(carouselContainer)
@@ -60,6 +99,7 @@ namespace Business.PageObjects
                 .Perform();
         }
 
+        // TODO remove
         protected bool IsInViewport(IWebElement element)
         {
             bool? isInViewport = (bool?)((IJavaScriptExecutor)driver).ExecuteScript(@"

@@ -2,7 +2,6 @@
 using Business.PageObjects;
 using Core.Utilities;
 using CrossCutting.Providers;
-using OpenQA.Selenium;
 
 namespace Tests
 {
@@ -14,10 +13,7 @@ namespace Tests
         [SetUp]
         public void Setup()
         {
-            bool runAsHeadless = false;
-
-            IWebDriver driver = serviceProvider.GetWebDriver(runAsHeadless);
-            homePage = new HomePage(driver);
+            homePage = new HomePage(serviceProvider);
         }
 
         [TearDown]

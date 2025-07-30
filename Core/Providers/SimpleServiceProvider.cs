@@ -17,7 +17,7 @@ namespace CrossCutting.Providers
             return LoggingFactory.CreateLogger<T>();
         }
 
-        public IWebDriver GetWebDriver(bool headless)
+        public IWebDriver GetWebDriver(bool headless = false)
         {
             return BrowserFactory.GetDriver("chrome", headless);
         }
