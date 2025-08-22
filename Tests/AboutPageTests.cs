@@ -1,32 +1,9 @@
 ﻿using Business.PageObjects;
-using Core.Utilities;
-using CrossCutting.Providers;
-using NUnit.Framework.Interfaces;
 
 namespace Tests
 {
-    internal class AboutPageTests
+    internal class AboutPageTests : BaseTest
     {
-        private HomePage homePage;
-        private readonly ISimpleServiceProvider serviceProvider = new SimpleServiceProvider();
-
-        [SetUp]
-        public void Setup()
-        {
-            homePage = new HomePage(serviceProvider);
-        }
-
-        [TearDown]
-        public void Teardown()
-        {
-            if (TestContext.CurrentContext.Result.Outcome == ResultState.Failure)
-            {
-                ScreenshotProvider.TakeBrowserScreenshot(homePage.driver);
-            }
-
-            BrowserFactory.CloseDriver();
-        }
-
         /*
          * Test case #3. Validate file download function works as expected:
             Create a Chrome instance.

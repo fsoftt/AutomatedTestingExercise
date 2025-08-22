@@ -1,32 +1,9 @@
 ﻿using Business.PageObjects;
-using Core.Utilities;
-using CrossCutting.Providers;
-using NUnit.Framework.Interfaces;
 
 namespace Tests
 {
-    internal class CareersPageTests
+    internal class CareersPageTests : BaseTest
     {
-        private HomePage homePage;
-        private readonly ISimpleServiceProvider serviceProvider = new SimpleServiceProvider();
-
-        [SetUp]
-        public void Setup()
-        {
-            homePage = new HomePage(serviceProvider);
-        }
-
-        [TearDown]
-        public void Teardown()
-        {
-            if (TestContext.CurrentContext.Result.Outcome == ResultState.Failure)
-            {
-                ScreenshotProvider.TakeBrowserScreenshot(homePage.driver);
-            }
-
-            BrowserFactory.CloseDriver();
-        }
-
         /*
          * Test case #1. Validate that the user can search for a position based on criteria.
             Navigate to https://www.epam.com/
