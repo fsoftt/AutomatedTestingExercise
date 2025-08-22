@@ -11,7 +11,6 @@ namespace Business.PageObjects
     {
         private const string PageTitle = "EPAM | Software Engineering & Product Development Services";
 
-        private readonly string url;
         private readonly By cookiesBy;
         private readonly By findButtonBy;
         private readonly By searchInputBy;
@@ -20,9 +19,9 @@ namespace Business.PageObjects
         private readonly By careersLinkBy;
         private readonly By insightsLinkBy;
 
-        public HomePage(ISimpleServiceProvider serviceProvider) : base(serviceProvider)
+        public HomePage(IWebDriver driver, ISimpleServiceProvider serviceProvider) : base(driver, serviceProvider)
         {
-            url = configuration.GetValue<string?>(ConfigurationKeys.Url)!;
+            this.driver = driver;
             string cookiesById = configuration.GetValue<string?>(ConfigurationKeys.CookiesElementBy)!;
             string findButtonById = configuration.GetValue<string?>(ConfigurationKeys.ValidateGlobalSearch.Find)!;
             string searchInputById = configuration.GetValue<string?>(ConfigurationKeys.ValidateGlobalSearch.Search)!;
@@ -50,9 +49,6 @@ namespace Business.PageObjects
 
         public IWebDriver PrepareSite()
         {
-            logger.LogInformation("Preparing site: {Url}", url);
-            driver.Navigate().GoToUrl(url);
-
             AcceptCookies();
 
             return driver;

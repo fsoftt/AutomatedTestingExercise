@@ -8,15 +8,10 @@ namespace Core.Utilities
 {
     public static class BrowserFactory
     {
-        private static IWebDriver? driver;
-
         // TODO create enum
         public static IWebDriver GetDriver(string browserType, bool headless = false)
         {
-            if (driver != null)
-            {
-                return driver;
-            }
+            IWebDriver? driver = null;
 
             switch (browserType.ToLower())
             {
@@ -67,10 +62,10 @@ namespace Core.Utilities
                 .Manage().Window
                 .Maximize();
 
-            return driver;
+            return driver!;
         }
 
-        public static void CloseDriver()
+        public static void CloseDriver(IWebDriver driver)
         {
             if (driver == null)
             {

@@ -22,9 +22,9 @@ namespace Business.PageObjects
             this.configuration = basePage.configuration;
         }
 
-        public BasePage(ISimpleServiceProvider serviceProvider)
+        public BasePage(IWebDriver driver, ISimpleServiceProvider serviceProvider)
         {
-            this.driver = serviceProvider.GetWebDriver();
+            this.driver = driver;
             this.logger = serviceProvider.GetLogger<BasePage>();
             this.configuration = serviceProvider.GetConfiguration();
         }

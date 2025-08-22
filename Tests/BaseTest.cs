@@ -1,19 +1,35 @@
 ﻿using Business.PageObjects;
 using Core.Utilities;
 using CrossCutting.Providers;
+using CrossCutting.Static;
+using Microsoft.Extensions.Configuration;
 using NUnit.Framework.Interfaces;
+using OpenQA.Selenium;
 
 namespace Tests
 {
     internal class BaseTest
     {
+        protected IWebDriver driver;
         protected HomePage homePage;
         protected readonly ISimpleServiceProvider serviceProvider = new SimpleServiceProvider();
 
         [SetUp]
         public void Setup()
         {
-            homePage = new HomePage(serviceProvider);
+            driver = serviceProvider.GetWebDriver();
+
+            string url = GetUrl();
+            driver.Navigate().GoToUrl(url);
+
+            homePage = new HomePage(driver, serviceProvider);
+        }
+
+        private string GetUrl()
+        {
+            IConfiguration configuration = serviceProvider.GetConfiguration();
+            string url = configuration.GetValue<string?>(ConfigurationKeys.Url)!;
+            return url;
         }
 
         [TearDown]
@@ -24,7 +40,8 @@ namespace Tests
                 ScreenshotProvider.TakeBrowserScreenshot(homePage.driver);
             }
 
-            BrowserFactory.CloseDriver();
+            driver.Dispose();
+            BrowserFactory.CloseDriver(driver);
         }
     }
 }
