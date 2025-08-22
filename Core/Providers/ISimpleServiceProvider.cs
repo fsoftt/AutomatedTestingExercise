@@ -7,6 +7,7 @@ namespace CrossCutting.Providers
 {
     public interface ISimpleServiceProvider
     {
+        IConfiguration GetTestData();
         IConfiguration GetConfiguration();
         ILogger GetLogger<T>();
         IWebDriver GetWebDriver(BrowserType browserType, bool headless = false);

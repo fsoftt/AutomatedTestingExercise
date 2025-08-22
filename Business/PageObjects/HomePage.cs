@@ -22,13 +22,13 @@ namespace Business.PageObjects
         public HomePage(IWebDriver driver, ISimpleServiceProvider serviceProvider) : base(driver, serviceProvider)
         {
             this.driver = driver;
-            string cookiesById = configuration.GetValue<string?>(ConfigurationKeys.CookiesElementBy)!;
-            string findButtonById = configuration.GetValue<string?>(ConfigurationKeys.ValidateGlobalSearch.Find)!;
-            string searchInputById = configuration.GetValue<string?>(ConfigurationKeys.ValidateGlobalSearch.Search)!;
-            string magnifierIconById = configuration.GetValue<string?>(ConfigurationKeys.ValidateGlobalSearch.Magnifier)!;
-            string aboutLinkById = configuration.GetValue<string?>(ConfigurationKeys.SearchForPositionBasedOnCriteria.AboutLinkText)!;
-            string careersLinkById = configuration.GetValue<string?>(ConfigurationKeys.SearchForPositionBasedOnCriteria.CareersLinkText)!;
-            string insightsLinkById = configuration.GetValue<string?>(ConfigurationKeys.SearchForPositionBasedOnCriteria.InsightsLinkText)!;
+            string cookiesById = testData.GetValue<string?>(ConfigurationKeys.CookiesElementBy)!;
+            string findButtonById = testData.GetValue<string?>(ConfigurationKeys.ValidateGlobalSearch.Find)!;
+            string searchInputById = testData.GetValue<string?>(ConfigurationKeys.ValidateGlobalSearch.Search)!;
+            string magnifierIconById = testData.GetValue<string?>(ConfigurationKeys.ValidateGlobalSearch.Magnifier)!;
+            string aboutLinkById = testData.GetValue<string?>(ConfigurationKeys.SearchForPositionBasedOnCriteria.AboutLinkText)!;
+            string careersLinkById = testData.GetValue<string?>(ConfigurationKeys.SearchForPositionBasedOnCriteria.CareersLinkText)!;
+            string insightsLinkById = testData.GetValue<string?>(ConfigurationKeys.SearchForPositionBasedOnCriteria.InsightsLinkText)!;
 
             cookiesBy = By.CssSelector(cookiesById);
             findButtonBy = By.XPath(findButtonById);

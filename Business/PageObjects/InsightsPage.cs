@@ -13,9 +13,9 @@ namespace Business.PageObjects
 
         public InsightsPage(BasePage basePage) : base(basePage)
         {
-            string carouselNextById = configuration.GetValue<string>(ConfigurationKeys.Insights.CarouselNext)!;
-            string carouselTitleById = configuration.GetValue<string>(ConfigurationKeys.Insights.CurrentCarouselTitle)!;
-            string readMoreButtonById = configuration.GetValue<string>(ConfigurationKeys.Insights.ReadMoreButton)!;
+            string carouselNextById = testData.GetValue<string>(ConfigurationKeys.Insights.CarouselNext)!;
+            string carouselTitleById = testData.GetValue<string>(ConfigurationKeys.Insights.CurrentCarouselTitle)!;
+            string readMoreButtonById = testData.GetValue<string>(ConfigurationKeys.Insights.ReadMoreButton)!;
 
             carouselNextBy = By.CssSelector(carouselNextById);
             carouselTitleBy = By.CssSelector(carouselTitleById);

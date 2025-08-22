@@ -27,13 +27,13 @@ namespace Business.PageObjects
                 throw new IllegalStateException("Page is different than expected", driver.Url);
             }
 
-            string applyById = configuration.GetValue<string?>(ConfigurationKeys.SearchForPositionBasedOnCriteria.Apply)!;
-            string locationById = configuration.GetValue<string?>(ConfigurationKeys.SearchForPositionBasedOnCriteria.Location)!;
-            string findButtonById = configuration.GetValue<string?>(ConfigurationKeys.SearchForPositionBasedOnCriteria.Find)!;
-            string allLocationsById = configuration.GetValue<string?>(ConfigurationKeys.SearchForPositionBasedOnCriteria.AllLocations)!;
-            string keywordsInputById = configuration.GetValue<string?>(ConfigurationKeys.SearchForPositionBasedOnCriteria.KeywordsId)!;
-            string latestElementById = configuration.GetValue<string?>(ConfigurationKeys.SearchForPositionBasedOnCriteria.LatestElement)!;
-            string remoteCheckboxById = configuration.GetValue<string?>(ConfigurationKeys.SearchForPositionBasedOnCriteria.RemoteOption)!;
+            string applyById = testData.GetValue<string?>(ConfigurationKeys.SearchForPositionBasedOnCriteria.Apply)!;
+            string locationById = testData.GetValue<string?>(ConfigurationKeys.SearchForPositionBasedOnCriteria.Location)!;
+            string findButtonById = testData.GetValue<string?>(ConfigurationKeys.SearchForPositionBasedOnCriteria.Find)!;
+            string allLocationsById = testData.GetValue<string?>(ConfigurationKeys.SearchForPositionBasedOnCriteria.AllLocations)!;
+            string keywordsInputById = testData.GetValue<string?>(ConfigurationKeys.SearchForPositionBasedOnCriteria.KeywordsId)!;
+            string latestElementById = testData.GetValue<string?>(ConfigurationKeys.SearchForPositionBasedOnCriteria.LatestElement)!;
+            string remoteCheckboxById = testData.GetValue<string?>(ConfigurationKeys.SearchForPositionBasedOnCriteria.RemoteOption)!;
 
             applyBy = By.XPath(applyById);
             locationBy = By.CssSelector(locationById);

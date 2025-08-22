@@ -8,6 +8,11 @@ namespace CrossCutting.Providers
 {
     public class SimpleServiceProvider : ISimpleServiceProvider
     {
+        public IConfiguration GetTestData()
+        {
+            return ConfigFactory.GetTestData();
+        }
+
         public IConfiguration GetConfiguration()
         {
             return ConfigFactory.Get();

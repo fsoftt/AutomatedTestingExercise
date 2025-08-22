@@ -1,0 +1,36 @@
+{
+  "Browser": "chrome",
+  "Url": "https://www.epam.com/",
+  "CookiesElementBy": "div#onetrust-consent-sdk #onetrust-accept-btn-handler",
+  "DownloadDirectory": "Downloads",
+  "SearchForPositionBasedOnCriteria": {
+    "AboutLinkText": "About",
+    "CareersLinkText": "Careers",
+    "InsightsLinkText": "Insights",
+    "KeywordsId": "new_form_job_search-keyword",
+    "Location": "div.recruiting-search__location",
+    "AllLocations": ".select2-results ul li:first-child ul li:first-child",
+    "RemoteOption": "//*[@id=\"jobSearchFilterForm\"]/fieldset/div/p[1]/label",
+    "Find": "//form[@id=\"jobSearchFilterForm\"]/descendant::button[@type=\"submit\"]",
+    "LatestElement": "//ul[contains(@class, 'search-result__list')]/li[last()]",
+    "Apply": "//ul[contains(@class, 'search-result__list')]/li[last()]//a[contains(text(), 'apply')]"
+  },
+  "ValidateGlobalSearch": {
+    "Magnifier": "search-icon",
+    "Search": "q",
+    "Find": ".//form[@class='header-search__field no-focus']//button",
+    "Articles": "//div[@class=\"search-results__items\"]//article",
+    "ArticleTitle": "h3",
+    "ArticleDescription": "p"
+  },
+  "Insights": {
+    "CarouselNext": "button.slider__right-arrow",
+    "InsightArticleTitle": "div.container div.header_and_download",
+    "CurrentCarouselTitle": "div.slider div.active div.slider__slide div.text",
+    "ReadMoreButton": "div.slider div.active div.slider__slide div.single-slide__cta-container a",
+    "CarouselContainer": "div.owl-stage-outer div.owl-stage div.owl-item.active div.slider__slide"
+  },
+  "Download": {
+    "DownloadButton": "//a[@download]"
+  }
+}

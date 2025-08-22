@@ -4,23 +4,45 @@ namespace Core.Utilities
 {
     public static class ConfigFactory
     {
+        private static IConfigurationRoot? testData;
         private static IConfigurationRoot? configuration;
 
         public static IConfiguration Get()
         {
             if (configuration == null)
             {
-                Initialize();
+                InitializeConfiguration();
             }
 
             return configuration!;
         }
 
-        private static void Initialize()
+        // TODO map to a class instead of using IConfiguration directly
+        public static IConfiguration GetTestData()
         {
-            configuration = new ConfigurationBuilder()
+            if (testData == null)
+            {
+                InitializeTestData();
+            }
+
+            return testData!;
+        }
+
+        private static void InitializeTestData()
+        {
+            testData = Initialize("testData.json");
+        }
+
+        private static void InitializeConfiguration()
+        {
+            configuration = Initialize("appsettings.json");
+        }
+
+        private static IConfigurationRoot Initialize(string fileName)
+        {
+            return new ConfigurationBuilder()
                 .SetBasePath(AppContext.BaseDirectory)
-                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
+                .AddJsonFile(fileName, optional: true, reloadOnChange: true)
                 .Build();
         }
     }

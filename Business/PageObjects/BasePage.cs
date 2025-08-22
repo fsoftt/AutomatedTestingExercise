@@ -11,6 +11,7 @@ namespace Business.PageObjects
     {
         public ILogger logger;
         public IWebDriver driver;
+        public IConfiguration testData;
         public IConfiguration configuration;
 
         private const int WaitTimeInSeconds = 10;
@@ -19,6 +20,7 @@ namespace Business.PageObjects
         {
             this.driver = basePage.driver;
             this.logger = basePage.logger;
+            this.testData = basePage.testData;
             this.configuration = basePage.configuration;
         }
 
@@ -26,6 +28,7 @@ namespace Business.PageObjects
         {
             this.driver = driver;
             this.logger = serviceProvider.GetLogger<BasePage>();
+            this.testData = serviceProvider.GetTestData();
             this.configuration = serviceProvider.GetConfiguration();
         }
 

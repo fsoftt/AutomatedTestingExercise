@@ -15,13 +15,13 @@ namespace Business.PageObjects
 
         public ResultsPage(HomePage homePage) : base(homePage)
         {
-            string? articleTitleId = configuration.GetValue<string?>(ConfigurationKeys.ValidateGlobalSearch.ArticleTitle);
+            string? articleTitleId = testData.GetValue<string?>(ConfigurationKeys.ValidateGlobalSearch.ArticleTitle);
             titleBy = By.TagName(articleTitleId!);
 
-            string? articleTitleDescriptionId = configuration.GetValue<string?>(ConfigurationKeys.ValidateGlobalSearch.ArticleDescription);
+            string? articleTitleDescriptionId = testData.GetValue<string?>(ConfigurationKeys.ValidateGlobalSearch.ArticleDescription);
             descriptionBy = By.TagName(articleTitleDescriptionId!);
 
-            string? articlesById = configuration.GetValue<string?>(ConfigurationKeys.ValidateGlobalSearch.Articles);
+            string? articlesById = testData.GetValue<string?>(ConfigurationKeys.ValidateGlobalSearch.Articles);
             articlesBy = By.XPath(articlesById!);
         }
 

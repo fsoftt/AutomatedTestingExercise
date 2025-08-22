@@ -18,8 +18,10 @@ namespace Tests
         [SetUp]
         public void Setup()
         {
+            IConfiguration testData = serviceProvider.GetTestData();
             IConfiguration configuration = serviceProvider.GetConfiguration();
-            string url = configuration.GetValue<string?>(ConfigurationKeys.Url)!;
+            
+            string url = testData.GetValue<string?>(ConfigurationKeys.Url)!;
             string browser = configuration.GetValue<string?>(ConfigurationKeys.Browser)!;
 
             driver = serviceProvider.GetWebDriver(BrowserTypeFactory.FromString(browser));

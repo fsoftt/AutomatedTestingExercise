@@ -11,7 +11,7 @@ namespace Business.PageObjects
 
         public InsightArticlePage(BasePage basePage) : base(basePage)
         {
-            string titleById = configuration.GetValue<string?>(ConfigurationKeys.Insights.InsightArticleTitle)!;
+            string titleById = testData.GetValue<string?>(ConfigurationKeys.Insights.InsightArticleTitle)!;
             titleBy = By.CssSelector(titleById);
         }
 

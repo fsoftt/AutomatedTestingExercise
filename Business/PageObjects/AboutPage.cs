@@ -12,7 +12,7 @@ namespace Business.PageObjects
 
         public AboutPage(HomePage homePage) : base(homePage)
         {
-            string downloadById = configuration.GetValue<string?>(ConfigurationKeys.Download.DownloadButton)!;
+            string downloadById = testData.GetValue<string?>(ConfigurationKeys.Download.DownloadButton)!;
             downloadBy = By.XPath(downloadById);
         }
 
