@@ -17,6 +17,7 @@ namespace Business.PageObjects
         private readonly By magnifierIconBy;
         private readonly By aboutLinkBy;
         private readonly By careersLinkBy;
+        private readonly By servicesLinkBy;
         private readonly By insightsLinkBy;
 
         public HomePage(IWebDriver driver, ISimpleServiceProvider serviceProvider) : base(driver, serviceProvider)
@@ -24,6 +25,7 @@ namespace Business.PageObjects
             this.driver = driver;
             string cookiesById = testData.GetValue<string?>(ConfigurationKeys.CookiesElementBy)!;
             string findButtonById = testData.GetValue<string?>(ConfigurationKeys.ValidateGlobalSearch.Find)!;
+            string servicesLinkById = testData.GetValue<string?>(ConfigurationKeys.ValidateServices.LinkText)!;
             string searchInputById = testData.GetValue<string?>(ConfigurationKeys.ValidateGlobalSearch.Search)!;
             string magnifierIconById = testData.GetValue<string?>(ConfigurationKeys.ValidateGlobalSearch.Magnifier)!;
             string aboutLinkById = testData.GetValue<string?>(ConfigurationKeys.SearchForPositionBasedOnCriteria.AboutLinkText)!;
@@ -37,6 +39,7 @@ namespace Business.PageObjects
             aboutLinkBy = By.LinkText(aboutLinkById);
             careersLinkBy = By.LinkText(careersLinkById);
             insightsLinkBy = By.LinkText(insightsLinkById);
+            servicesLinkBy = By.LinkText(servicesLinkById);
 
             PrepareSite();
 
@@ -96,6 +99,15 @@ namespace Business.PageObjects
             Click(driver.FindElement(insightsLinkBy));
 
             return new InsightsPage(this);
+        }
+
+        public ServicesPage OpenServices()
+        {
+            logger.LogInformation("Opening Services page");
+
+            Click(driver.FindElement(servicesLinkBy));
+
+            return new ServicesPage(this);
         }
 
         public ResultsPage Search(string searchTerm)

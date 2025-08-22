@@ -3,6 +3,15 @@
   "Url": "https://www.epam.com/",
   "CookiesElementBy": "div#onetrust-consent-sdk #onetrust-accept-btn-handler",
   "DownloadDirectory": "Downloads",
+  "ValidateServices": {
+    "LinkText": "Services",
+    "MenuBy": ".hamburger-menu__button",
+    "ServicesMenuBy": "//ul[contains(@class, \"hamburger-menu__list\")]//li[contains(., \"Services\")]",
+    "ArtificialIntelligenceMenuBy": "//ul[contains(@class, \"hamburger-menu__sub-list\")]//li[contains(., \"Artificial Intelligence\")]",
+    "ObjectiveMenuBy": "//ul[contains(@class, \"hamburger-menu__third-level-menu\")]//li[contains(., \"{0}\")]//a[@href[contains(., \"/services/artificial-intelligence/\")]]",
+    "TitleBy": ".column-control .text span.museo-sans-500",
+    "OurRelatedExpertiseBy": "//span[contains(@class, \"museo-sans-light\")][contains(., \"Our Related Expertise\")]"
+  },
   "SearchForPositionBasedOnCriteria": {
     "AboutLinkText": "About",
     "CareersLinkText": "Careers",

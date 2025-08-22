@@ -45,5 +45,16 @@
         {
             public const string DownloadButton = "Download:DownloadButton";
         }
+
+        public static class ValidateServices
+        {
+            public const string MenuBy = "ValidateServices:MenuBy";
+            public const string TitleBy = "ValidateServices:TitleBy";
+            public const string LinkText = "ValidateServices:LinkText";
+            public const string ServicesMenuBy = "ValidateServices:ServicesMenuBy";
+            public const string ObjectiveMenuBy = "ValidateServices:ObjectiveMenuBy";
+            public const string OurRelatedExpertiseBy = "ValidateServices:OurRelatedExpertiseBy";
+            public const string ArtificialIntelligenceMenuBy = "ValidateServices:ArtificialIntelligenceMenuBy";
+        }
     }
 }
