@@ -22,12 +22,17 @@ namespace Tests
 
             IEnumerable<Article> articles = resultsPage.GetArticles();
 
-            foreach (Article article in articles)
+            Assert.Multiple(() =>
             {
-                Assert.That(article.Title.ToLower().Contains(searchTerm.ToLower())
-                    || article.Description.ToLower().Contains(searchTerm.ToLower()), Is.True,
-                    $"Article '{article.Title}' does not contain the search term '{searchTerm}'.");
-            }
+                Assert.That(articles, Is.Not.Empty, "No articles were found in the search results.");
+
+                foreach (Article article in articles)
+                {
+                    Assert.That(article.Title.ToLower().Contains(searchTerm.ToLower())
+                        || article.Description.ToLower().Contains(searchTerm.ToLower()), Is.True,
+                        $"Article '{article.Title}' does not contain the search term '{searchTerm}'.");
+                }
+            });
         }
     }
 }
