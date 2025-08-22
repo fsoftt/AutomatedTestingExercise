@@ -4,6 +4,7 @@
     {
         public const string WaitTimeInSeconds = "WaitTimeInSeconds";
         public const string Url = "Url";
+        public const string Browser = "Browser";
         public const string CookiesElementBy = "CookiesElementBy";
         public const string DownloadDirectory = "Downloads";
 

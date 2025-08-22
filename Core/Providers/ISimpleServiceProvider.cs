@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using CrossCutting.Types;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using OpenQA.Selenium;
 
@@ -8,6 +9,6 @@ namespace CrossCutting.Providers
     {
         IConfiguration GetConfiguration();
         ILogger GetLogger<T>();
-        IWebDriver GetWebDriver(bool headless = false);
+        IWebDriver GetWebDriver(BrowserType browserType, bool headless = false);
     }
 }

@@ -1,4 +1,5 @@
 ﻿using CrossCutting.Static;
+using CrossCutting.Types;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Edge;
@@ -8,14 +9,13 @@ namespace Core.Utilities
 {
     public static class BrowserFactory
     {
-        // TODO create enum
-        public static IWebDriver GetDriver(string browserType, bool headless = false)
+        public static IWebDriver GetDriver(BrowserType browserType, bool headless = false)
         {
             IWebDriver? driver = null;
 
-            switch (browserType.ToLower())
+            switch (browserType)
             {
-                case "chrome":
+                case BrowserType.Chrome:
                     // TODO Options can be created in a provider
                     var options = new ChromeOptions();
                     options.AddUserProfilePreference("download.default_directory", Constants.DownloadDirectory);
@@ -31,7 +31,7 @@ namespace Core.Utilities
 
                     driver = new ChromeDriver(options);
                     break;
-                case "firefox":
+                case BrowserType.Firefox:
                     var firefoxOptions = new FirefoxOptions();
 
                     if (headless)
@@ -43,7 +43,7 @@ namespace Core.Utilities
 
                     driver = new FirefoxDriver(firefoxOptions);
                     break;
-                case "edge":
+                case BrowserType.Edge:
                     var edgeOptions = new EdgeOptions();
 
                     if (headless)
@@ -65,7 +65,7 @@ namespace Core.Utilities
             return driver!;
         }
 
-        public static void CloseDriver(IWebDriver driver)
+        public static void CloseDriver(IWebDriver? driver)
         {
             if (driver == null)
             {

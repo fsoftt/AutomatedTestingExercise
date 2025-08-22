@@ -1,4 +1,5 @@
 ﻿using Core.Utilities;
+using CrossCutting.Types;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using OpenQA.Selenium;
@@ -17,9 +18,9 @@ namespace CrossCutting.Providers
             return LoggingFactory.CreateLogger<T>();
         }
 
-        public IWebDriver GetWebDriver(bool headless = false)
+        public IWebDriver GetWebDriver(BrowserType browserType, bool headless = false)
         {
-            return BrowserFactory.GetDriver("chrome", headless);
+            return BrowserFactory.GetDriver(browserType, headless);
         }
     }
 }

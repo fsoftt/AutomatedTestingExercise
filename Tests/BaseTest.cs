@@ -2,6 +2,7 @@
 using Core.Utilities;
 using CrossCutting.Providers;
 using CrossCutting.Static;
+using CrossCutting.Types;
 using Microsoft.Extensions.Configuration;
 using NUnit.Framework.Interfaces;
 using OpenQA.Selenium;
@@ -17,19 +18,15 @@ namespace Tests
         [SetUp]
         public void Setup()
         {
-            driver = serviceProvider.GetWebDriver();
+            IConfiguration configuration = serviceProvider.GetConfiguration();
+            string url = configuration.GetValue<string?>(ConfigurationKeys.Url)!;
+            string browser = configuration.GetValue<string?>(ConfigurationKeys.Browser)!;
 
-            string url = GetUrl();
+            driver = serviceProvider.GetWebDriver(BrowserTypeFactory.FromString(browser));
+
             driver.Navigate().GoToUrl(url);
 
             homePage = new HomePage(driver, serviceProvider);
-        }
-
-        private string GetUrl()
-        {
-            IConfiguration configuration = serviceProvider.GetConfiguration();
-            string url = configuration.GetValue<string?>(ConfigurationKeys.Url)!;
-            return url;
         }
 
         [TearDown]
