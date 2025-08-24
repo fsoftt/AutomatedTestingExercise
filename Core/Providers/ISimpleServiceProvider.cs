@@ -1,4 +1,5 @@
-﻿using CrossCutting.Types;
+﻿using Core.Utilities;
+using CrossCutting.Types;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using OpenQA.Selenium;
@@ -11,5 +12,6 @@ namespace CrossCutting.Providers
         IConfiguration GetConfiguration();
         ILogger GetLogger<T>();
         IWebDriver GetWebDriver(BrowserType browserType, bool headless = false);
+        RestSharpClient GetRestClient();
     }
 }
