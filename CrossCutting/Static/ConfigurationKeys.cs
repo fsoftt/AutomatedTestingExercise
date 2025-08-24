@@ -56,5 +56,12 @@
             public const string OurRelatedExpertiseBy = "ValidateServices:OurRelatedExpertiseBy";
             public const string ArtificialIntelligenceMenuBy = "ValidateServices:ArtificialIntelligenceMenuBy";
         }
+
+        public static class Rest
+        {
+            public const string Endpoint = "Rest:Endpoint";
+            public const string UsersMethod = "Rest:UsersMethod";
+            public const string InvalidMethod = "Rest:InvalidMethod";
+        }
     }
 }

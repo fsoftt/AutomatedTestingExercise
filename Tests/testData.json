@@ -41,5 +41,10 @@
   },
   "Download": {
     "DownloadButton": "//a[@download]"
+  },
+  "Rest": {
+    "Endpoint": "https://jsonplaceholder.typicode.com/",
+    "UsersMethod": "users",
+    "InvalidMethod": "invalidendpoint"
   }
 }

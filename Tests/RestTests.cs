@@ -3,11 +3,20 @@ using CrossCutting.Providers;
 using Microsoft.Extensions.Configuration;
 using Business.Models;
 using System.Text.Json;
+using RestSharp;
+using System.Net;
+using CrossCutting.Static;
 
 namespace Tests
 {
     public class RestTests
     {
+        private const string Category = "API";
+        
+        private string endpoint = string.Empty;
+        private string usersMethod = string.Empty;
+        private string invalidMethod = string.Empty;
+
         private RestSharpClient? client;
         protected readonly ISimpleServiceProvider serviceProvider = new SimpleServiceProvider();
 
@@ -18,6 +27,9 @@ namespace Tests
             IConfiguration configuration = serviceProvider.GetConfiguration();
 
             client = serviceProvider.GetRestClient();
+            endpoint = testData.GetSection(ConfigurationKeys.Rest.Endpoint).Value ?? throw new ArgumentNullException("Endpoint is null");
+            usersMethod = testData.GetSection(ConfigurationKeys.Rest.UsersMethod).Value ?? throw new ArgumentNullException("UsersMethod is null");
+            invalidMethod = testData.GetSection(ConfigurationKeys.Rest.InvalidMethod).Value ?? throw new ArgumentNullException("InvalidMethod is null");
         }
 
         [TearDown]
@@ -33,15 +45,14 @@ namespace Tests
             Validate that user receives 200 OK response code. There are no error messages;
         */
         [Test]
+        [Category(Category)]
         public async Task GetUsersWorks()
         {
-            var response = await client!.GetAsync("https://jsonplaceholder.typicode.com/users");
-
-            Assert.Multiple(() =>
-            {
-                Assert.That(response.IsSuccessful, Is.True, "Response was not successful");
-                Assert.That(response.StatusCode, Is.EqualTo(System.Net.HttpStatusCode.OK), "Status code is not 200 OK");
-            });
+            RestResponse response = await client!
+                .SetEndpoint(endpoint)
+                .SetMethod(usersMethod)
+                .GetAsync();
+            AssertResponse(response);
 
             List<User?>? users = JsonSerializer.Deserialize<List<User?>?>(response.Content!);
             Assert.That(users, Is.Not.Null, "Users list is null");
@@ -50,7 +61,7 @@ namespace Tests
                 return;
             }
 
-            Assert.That(users!.Count, Is.GreaterThan(0), "Users list is empty");
+            Assert.That(users, Is.Not.Empty, "Users list is empty");
 
             foreach (var user in users)
             {
@@ -76,15 +87,18 @@ namespace Tests
             Validate that user receives 200 OK response code. There are no error messages.
         */
         [Test]
+        [Category(Category)]
         public async Task GetUsersHeaderWorks()
         {
-            RestSharp.RestResponse response = await client!.GetAsync("https://jsonplaceholder.typicode.com/users");
+            RestResponse response = await client!
+                .SetEndpoint(endpoint)
+                .SetMethod(usersMethod)
+                .GetAsync();
+            AssertResponse(response);
+
             Assert.Multiple(() =>
             {
-                Assert.That(response.IsSuccessful, Is.True, "Response was not successful");
-                Assert.That(response.StatusCode, Is.EqualTo(System.Net.HttpStatusCode.OK), "Status code is not 200 OK");
-
-                RestSharp.HeaderParameter? contentTypeHeader = response.Headers?
+                HeaderParameter? contentTypeHeader = response.Headers?
                     .FirstOrDefault(h => h.Name.Equals("Content-Type", StringComparison.OrdinalIgnoreCase));
                 Assert.That(contentTypeHeader, Is.Not.Null, "Content-Type header is missing");
                 if (contentTypeHeader != null)
@@ -92,7 +106,7 @@ namespace Tests
                     Assert.That(contentTypeHeader!.Value.ToString(), Is.EqualTo("application/json"), "Content-Type header value is incorrect");
                 }
 
-                RestSharp.HeaderParameter? charsetHeader = response.Headers?
+                HeaderParameter? charsetHeader = response.Headers?
                     .FirstOrDefault(h => h.Name.Equals("charset", StringComparison.OrdinalIgnoreCase));
                 Assert.That(charsetHeader, Is.Not.Null, "charset header is missing");
                 if (charsetHeader != null)
@@ -112,14 +126,14 @@ namespace Tests
             Validate that user receives 200 OK response code. There are no error messages.
         */
         [Test]
+        [Category(Category)]
         public async Task GetUsersContentWorks()
         {
-            var response = await client!.GetAsync("https://jsonplaceholder.typicode.com/users");
-            Assert.Multiple(() =>
-            {
-                Assert.That(response.IsSuccessful, Is.True, "Response was not successful");
-                Assert.That(response.StatusCode, Is.EqualTo(System.Net.HttpStatusCode.OK), "Status code is not 200 OK");
-            });
+            RestResponse response = await client!
+                .SetEndpoint(endpoint)
+                .SetMethod(usersMethod)
+                .GetAsync();
+            AssertResponse(response);
 
             List<User?>? users = JsonSerializer.Deserialize<List<User?>?>(response.Content!);
             Assert.That(users, Is.Not.Null, "Users list is null");
@@ -128,8 +142,8 @@ namespace Tests
                 return;
             }
 
-            Assert.That(users!.Count, Is.EqualTo(10), "Users list does not contain 10 users");
-            HashSet<int> userIds = new HashSet<int>();
+            Assert.That(users!, Has.Count.EqualTo(10), "Users list does not contain 10 users");
+            HashSet<int> userIds = [];
             foreach (var user in users)
             {
                 Assert.Multiple(() =>
@@ -148,11 +162,12 @@ namespace Tests
 
         /*
             Tasks #4. Validate that user can be created
-            Create and send request to https://jsonplaceholder.typicode.com/usersusing POST method with Name and Username fields 
+            Create and send request to https://jsonplaceholder.typicode.com/users using POST method with Name and Username fields 
             Validate that response is not empty and contains the ID value
             Validate that user receives 201 Created response code. There are no error messages
         */
         [Test]
+        [Category(Category)]
         public async Task CreateUserWorks()
         {
             var newUser = new
@@ -160,14 +175,9 @@ namespace Tests
                 name = "John Doe",
                 username = "johndoe"
             };
-            var response = await client!.PostAsync("https://jsonplaceholder.typicode.com/users", newUser);
-
-            Assert.Multiple(() =>
-            {
-                Assert.That(response.IsSuccessful, Is.True, "Response was not successful");
-                Assert.That(response.StatusCode, Is.EqualTo(System.Net.HttpStatusCode.Created), "Status code is not 201 Created");
-                Assert.That(response.Content, Is.Not.Null.And.Not.Empty, "Response content is null or empty");
-            });
+            RestResponse response = await client!.PostAsync(endpoint + usersMethod, newUser);
+            AssertResponse(response, HttpStatusCode.Created);
+            Assert.That(response.Content, Is.Not.Null.And.Not.Empty, "Response content is null or empty");
 
             User? createdUser = JsonSerializer.Deserialize<User?>(response.Content!);
             Assert.That(createdUser, Is.Not.Null, "Created user is null");
@@ -176,9 +186,12 @@ namespace Tests
                 return;
             }
 
-            Assert.That(createdUser!.Id, Is.GreaterThan(0), "Created user ID is not greater than 0");
-            Assert.That(createdUser!.Name, Is.EqualTo(newUser.name), "Created user Name does not match");
-            Assert.That(createdUser!.Username, Is.EqualTo(newUser.username), "Created user Username does not match");
+            Assert.Multiple(() =>
+            {
+                Assert.That(createdUser!.Id, Is.GreaterThan(0), "Created user ID is not greater than 0");
+                Assert.That(createdUser!.Name, Is.EqualTo(newUser.name), "Created user Name does not match");
+                Assert.That(createdUser!.Username, Is.EqualTo(newUser.username), "Created user Username does not match");
+            });
         }
 
         /*
@@ -187,13 +200,26 @@ namespace Tests
             Validate that user receives 404 Not Found response code. There are no error messages.  
         */
         [Test]
+        [Category(Category)]
         public async Task GetInvalidEndpointWorks()
         {
-            var response = await client!.GetAsync("https://jsonplaceholder.typicode.com/invalidendpoint");
+            RestResponse response = await client!
+                .SetEndpoint(endpoint)
+                .SetMethod(invalidMethod)
+                .GetAsync();
             Assert.Multiple(() =>
             {
                 Assert.That(response.IsSuccessful, Is.False, "Response was successful but should not be");
-                Assert.That(response.StatusCode, Is.EqualTo(System.Net.HttpStatusCode.NotFound), "Status code is not 404 Not Found");
+                Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.NotFound), "Status code is not 404 Not Found");
+            });
+        }
+
+        private static void AssertResponse(RestResponse response, HttpStatusCode statusCode = HttpStatusCode.OK)
+        {
+            Assert.Multiple(() =>
+            {
+                Assert.That(response.IsSuccessful, Is.True, "Response was not successful");
+                Assert.That(response.StatusCode, Is.EqualTo(statusCode), "Status code is not 200 OK");
             });
         }
     }
