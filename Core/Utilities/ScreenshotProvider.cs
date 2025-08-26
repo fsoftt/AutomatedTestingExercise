@@ -6,6 +6,11 @@ namespace Core.Utilities
     {
         public static string TakeBrowserScreenshot(IWebDriver driver)
         {
+            if (!Directory.Exists("screenshots"))
+            {
+                Directory.CreateDirectory("screenshots");
+            }
+
             var now = DateTime.Now.ToString("yyyy-MM-dd_hh-mm-ss-fff");
             var screenshotPath = $"screenshots/Display_{now}.png";
             ((ITakesScreenshot) driver).GetScreenshot().SaveAsFile(screenshotPath);
