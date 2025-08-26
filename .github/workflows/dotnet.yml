@@ -64,5 +64,5 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: Logs
-        path: D:/a/AutomatedTestingExercise/AutomatedTestingExercise/Tests/bin/Debug/net8.0/logs
+        path: ./Tests/bin/Debug/net8.0/logs
         if-no-files-found: warn
