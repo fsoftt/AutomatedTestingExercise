@@ -17,10 +17,12 @@ namespace Core.Utilities
             {
                 case BrowserType.Chrome:
                     // TODO Options can be created in a provider
+                    var guid = Guid.NewGuid();
                     var options = new ChromeOptions();
-                    options.AddUserProfilePreference("download.default_directory", Constants.DownloadDirectory);
+                    options.AddUserProfilePreference("download.default_directory", "/tmp/chrome-user-data-{guid}");
                     options.AddUserProfilePreference("download.prompt_for_download", false);
                     options.AddUserProfilePreference("disable-popup-blocking", true);
+                    options.AddArgument($"--user-data-dir=/tmp/chrome-user-data-{guid}");
 
                     if (headless)
                     {
