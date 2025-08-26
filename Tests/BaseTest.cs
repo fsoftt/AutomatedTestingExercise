@@ -42,7 +42,7 @@ namespace Tests
         {
             if (TestContext.CurrentContext.Result.Outcome != ResultState.Success)
             {
-                ScreenshotProvider.TakeBrowserScreenshot(homePage.driver);
+                ScreenshotProvider.TakeBrowserScreenshot(driver);
             }
 
             driver.Dispose();
