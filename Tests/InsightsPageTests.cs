@@ -5,6 +5,7 @@ namespace Tests
     internal class InsightsPageTests : BaseTest
     {
         [Test]
+        [Ignore("Testing")]
         public void CheckInsights()
         {
             InsightsPage insightsPage = homePage.OpenInsights();

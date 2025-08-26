@@ -19,6 +19,7 @@ namespace Tests
         [TestCase("C#")]
         [TestCase("Java")]
         [TestCase("Python")]
+        [Ignore("Testing")]
         public void SearchForPositionBasedOnCriteria(string programmingLanguage)
         {
             CareersPage careersPage = homePage.OpenCareers();

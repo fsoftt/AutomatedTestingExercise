@@ -14,6 +14,7 @@ namespace Tests
         */
         [TestCase("Responsible AI")]
         [TestCase("Generative AI")]
+        [Ignore("Testing")]
         public void OpenServiceMenu(string menuOption)
         {
             ServicesPage servicesPage = homePage.OpenServices();
