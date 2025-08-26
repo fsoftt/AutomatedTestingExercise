@@ -21,11 +21,8 @@ namespace Tests
         {
             var logger = LoggingFactory.CreateLogger<BaseTest>();
 
-            logger.LogDebug("Setting up the test.");
             IConfiguration testData = serviceProvider.GetTestData();
-            logger.LogDebug("Retrieved test data.");
             IConfiguration configuration = serviceProvider.GetConfiguration();
-            logger.LogDebug("Retrieved configuration.");
 
             string url = testData.GetValue<string?>(ConfigurationKeys.Url)!;
             string browser = Environment.GetEnvironmentVariable("TEST_BROWSER")?.ToLower() ?? configuration.GetValue<string?>(ConfigurationKeys.Browser)!;
@@ -35,15 +32,7 @@ namespace Tests
             driver = serviceProvider.GetWebDriver(BrowserTypeFactory.FromString(browser));
             logger.LogDebug("Driver created");
 
-            logger.LogDebug("Navigating");
             driver.Navigate().GoToUrl(url);
-            logger.LogDebug("Navigated");
-
-            logger.LogDebug("Taking screenshot");
-            ScreenshotProvider.TakeBrowserScreenshot(driver);
-            logger.LogDebug("Screenshot taken" + Environment.CurrentDirectory);
-            logger.LogDebug("IMPORTANT: " + string.Join(", ", Directory.GetFiles("screenshots")));
-            logger.LogDebug("IMPORTANT: " + string.Join(", ", Directory.GetFiles("/screenshots")));
 
             homePage = new HomePage(driver, serviceProvider);
         }
@@ -51,8 +40,7 @@ namespace Tests
         [TearDown]
         public void Teardown()
         {
-            ScreenshotProvider.TakeBrowserScreenshot(homePage.driver);
-            if (TestContext.CurrentContext.Result.Outcome == ResultState.Failure)
+            if (TestContext.CurrentContext.Result.Outcome != ResultState.Success)
             {
                 ScreenshotProvider.TakeBrowserScreenshot(homePage.driver);
             }
