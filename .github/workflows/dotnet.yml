@@ -7,7 +7,12 @@ on:
     branches: [ "main" ]
   schedule:
     - cron: '0 0 * * *' # Runs at 00:00 UTC every day
-
+  workflow_dispatch:
+    inputs:
+        browser:
+          description: 'Browser to run tests against (chrome or edge)'
+          required: true
+          default: 'chrome'
 jobs:
   build:
     runs-on: windows-latest
