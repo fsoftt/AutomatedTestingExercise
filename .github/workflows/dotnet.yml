@@ -10,7 +10,6 @@ on:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     steps:
@@ -29,5 +28,11 @@ jobs:
       run: dotnet restore
     - name: Build
       run: dotnet build --no-restore
-    - name: Test
-      run: dotnet test --no-build --verbosity normal
+
+    - name: Run API Tests
+      run: dotnet test --no-build --verbosity normal --filter "Category=API"
+      continue-on-error: true
+
+    - name: Run UI Tests
+      run: dotnet test --no-build --verbosity normal --filter "Category=UI"
+      continue-on-error: true

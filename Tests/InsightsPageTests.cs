@@ -6,6 +6,7 @@ namespace Tests
     {
         [Test]
         [Ignore("Testing")]
+        [Category("UI")]
         public void CheckInsights()
         {
             InsightsPage insightsPage = homePage.OpenInsights();

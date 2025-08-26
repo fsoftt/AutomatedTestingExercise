@@ -17,6 +17,7 @@ namespace Tests
         [TestCase("Blockchain")]
         [TestCase("Automation")]
         [Ignore("Testing")]
+        [Category("UI")]
         public void ValidateGlobalSearch(string searchTerm)
         {
             ResultsPage resultsPage = homePage.Search(searchTerm);

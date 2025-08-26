@@ -17,6 +17,7 @@ namespace Tests
         */
         [Ignore("Testing")]
         [TestCase("EPAM_Corporate_Overview_Q4FY-2024.pdf")]
+        [Category("UI")]
         public void DownloadBrochure(string fileName)
         {
             AboutPage aboutPage = homePage.OpenAbout();
