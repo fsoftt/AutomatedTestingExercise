@@ -34,6 +34,7 @@ namespace Tests
         [TearDown]
         public void Teardown()
         {
+            ScreenshotProvider.TakeBrowserScreenshot(homePage.driver);
             if (TestContext.CurrentContext.Result.Outcome == ResultState.Failure)
             {
                 ScreenshotProvider.TakeBrowserScreenshot(homePage.driver);
