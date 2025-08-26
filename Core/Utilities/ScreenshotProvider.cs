@@ -1,4 +1,6 @@
-﻿using OpenQA.Selenium;
+﻿using CrossCutting.Providers;
+using Microsoft.Extensions.Logging;
+using OpenQA.Selenium;
 
 namespace Core.Utilities
 {
@@ -6,8 +8,10 @@ namespace Core.Utilities
     {
         public static string TakeBrowserScreenshot(IWebDriver driver)
         {
+            LoggingFactory.CreateLogger<SimpleServiceProvider>().LogInformation("Taking screenshot of the browser window. Path: " + Environment.CurrentDirectory);
+
             var now = DateTime.Now.ToString("yyyy-MM-dd_hh-mm-ss-fff");
-            var screenshotPath = $"screenshots/Display_{now}.png";
+            var screenshotPath = $"/screenshots/Display_{now}.png";
             ((ITakesScreenshot) driver).GetScreenshot().SaveAsFile(screenshotPath);
 
             return screenshotPath;

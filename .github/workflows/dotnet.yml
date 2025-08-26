@@ -18,6 +18,8 @@ jobs:
       uses: actions/setup-dotnet@v4
       with:
         dotnet-version: 8.0.x
+    - name: Install Chrome
+      uses: browser-actions/setup-chrome@v1
     # - name: Install Google Chrome
     #   run: |
     #     wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
