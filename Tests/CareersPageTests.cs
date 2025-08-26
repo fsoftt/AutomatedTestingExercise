@@ -19,7 +19,6 @@ namespace Tests
         [TestCase("C#")]
         [TestCase("Java")]
         [TestCase("Python")]
-        [Ignore("Testing")]
         [Category("UI")]
         public void SearchForPositionBasedOnCriteria(string programmingLanguage)
         {
