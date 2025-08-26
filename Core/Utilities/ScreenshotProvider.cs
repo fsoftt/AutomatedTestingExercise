@@ -11,7 +11,7 @@ namespace Core.Utilities
             LoggingFactory.CreateLogger<SimpleServiceProvider>().LogInformation("Taking screenshot of the browser window. Path: " + Environment.CurrentDirectory);
 
             var now = DateTime.Now.ToString("yyyy-MM-dd_hh-mm-ss-fff");
-            var screenshotPath = $"/screenshots/Display_{now}.png";
+            var screenshotPath = $"D:/a/AutomatedTestingExercise/AutomatedTestingExercise/Tests/screenshots/Display_{now}.png";
             ((ITakesScreenshot) driver).GetScreenshot().SaveAsFile(screenshotPath);
 
             return screenshotPath;
