@@ -41,7 +41,9 @@ namespace Tests
 
             logger.LogDebug("Taking screenshot");
             ScreenshotProvider.TakeBrowserScreenshot(driver);
-            logger.LogDebug("Screenshot taken");
+            logger.LogDebug("Screenshot taken" + Environment.CurrentDirectory);
+            logger.LogDebug("IMPORTANT: " + string.Join(", ", Directory.GetFiles("screenshots")));
+            logger.LogDebug("IMPORTANT: " + string.Join(", ", Directory.GetFiles("/screenshots")));
 
             homePage = new HomePage(driver, serviceProvider);
         }
