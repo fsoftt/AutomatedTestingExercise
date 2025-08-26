@@ -30,9 +30,31 @@ jobs:
       run: dotnet build --no-restore
 
     - name: Run API Tests
-      run: dotnet test --no-build --verbosity normal --filter "Category=API"
+      run: dotnet test --no-build --verbosity normal --filter "Category=API" --logger "trx;LogFileName=api_test_results.trx" --results-directory ./TestResults/API
       continue-on-error: true
 
     - name: Run UI Tests
-      run: dotnet test --no-build --verbosity normal --filter "Category=UI"
+      run: dotnet test --no-build --verbosity normal --filter "Category=UI" --logger "trx;LogFileName=ui_test_results.trx" --results-directory ./TestResults/UI
       continue-on-error: true
+
+    - name: Upload API Test Results
+      if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: API-Test-Results
+        path: ./TestResults/API
+
+    - name: Upload UI Test Results
+      if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: UI-Test-Results
+        path: ./TestResults/UI
+
+    - name: Upload Screenshots
+      if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: Screenshots
+        path: ./TestResults/Screenshots
+        if-no-files-found: warn
