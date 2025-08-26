@@ -98,20 +98,12 @@ namespace Tests
 
             Assert.Multiple(() =>
             {
-                HeaderParameter? contentTypeHeader = response.Headers?
+                HeaderParameter? contentTypeHeader = response.ContentHeaders?
                     .FirstOrDefault(h => h.Name.Equals("Content-Type", StringComparison.OrdinalIgnoreCase));
                 Assert.That(contentTypeHeader, Is.Not.Null, "Content-Type header is missing");
                 if (contentTypeHeader != null)
                 {
-                    Assert.That(contentTypeHeader!.Value.ToString(), Is.EqualTo("application/json"), "Content-Type header value is incorrect");
-                }
-
-                HeaderParameter? charsetHeader = response.Headers?
-                    .FirstOrDefault(h => h.Name.Equals("charset", StringComparison.OrdinalIgnoreCase));
-                Assert.That(charsetHeader, Is.Not.Null, "charset header is missing");
-                if (charsetHeader != null)
-                {
-                    Assert.That(contentTypeHeader!.Value.ToString(), Is.EqualTo("utf-8"), "charset header value is incorrect");
+                    Assert.That(contentTypeHeader!.Value.ToString(), Is.EqualTo("application/json; charset=utf-8"), "Content-Type header value is incorrect");
                 }
             });
         }
