@@ -14,7 +14,6 @@ namespace Tests
         */
         [TestCase("Responsible AI")]
         [TestCase("Generative AI")]
-        [Ignore("Testing")]
         [Category("UI")]
         public void OpenServiceMenu(string menuOption)
         {

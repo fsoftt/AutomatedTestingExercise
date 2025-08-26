@@ -16,7 +16,6 @@ namespace Tests
         [TestCase("Cloud")]
         [TestCase("Blockchain")]
         [TestCase("Automation")]
-        [Ignore("Testing")]
         [Category("UI")]
         public void ValidateGlobalSearch(string searchTerm)
         {

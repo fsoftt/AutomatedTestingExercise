@@ -15,7 +15,6 @@ namespace Tests
             Validate that file “EPAM_Systems_Company_Overview.pdf” downloaded (use the name of the file as a parameter)
             Close the browser.
         */
-        [Ignore("Testing")]
         [TestCase("EPAM_Corporate_Overview_Q4FY-2024.pdf")]
         [Category("UI")]
         public void DownloadBrochure(string fileName)

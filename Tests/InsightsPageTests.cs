@@ -5,7 +5,6 @@ namespace Tests
     internal class InsightsPageTests : BaseTest
     {
         [Test]
-        [Ignore("Testing")]
         [Category("UI")]
         public void CheckInsights()
         {
